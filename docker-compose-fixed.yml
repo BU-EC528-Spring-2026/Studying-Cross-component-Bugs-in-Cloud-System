@@ -1,0 +1,47 @@
+version: '3.8'
+
+# ZOOKEEPER-2184 Reproduction: FIXED version (3.7.0)
+# ZK client re-resolves hostnames on connection failure.
+# When ZK container restarts with a new IP, Kafka reconnects.
+
+networks:
+  zknet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16
+
+services:
+  zookeeper:
+    image: zookeeper:3.7.0
+    container_name: zk-fixed
+    hostname: zookeeper
+    networks:
+      zknet:
+        ipv4_address: 172.31.0.10
+    ports:
+      - "2182:2181"
+    environment:
+      ZOO_TICK_TIME: 2000
+      ZOO_MAX_CLIENT_CNXNS: 60
+
+  kafka:
+    image: wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka-client-fixed
+    hostname: kafka
+    depends_on:
+      - zookeeper
+    networks:
+      zknet:
+        ipv4_address: 172.31.0.30
+    ports:
+      - "9093:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: /kafka/logs
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT_MS: 15000
+      KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT_MS: 10000
