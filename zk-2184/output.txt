@@ -1,0 +1,227 @@
+hudsonre@enterprise:~/EC528/zookeeper_bugs/zk-2184$ sudo ./reproduce.sh
+
+ ZOOKEEPER-2184 Reproduction (v4 — Persistent ZK Data)
+
+ Phase 1: Kafka 1.1.1 → ZK client 3.4.10 (BUGGY)
+ Phase 2: Kafka 2.8.1 → ZK client 3.5.9  (FIXED)
+ Server:  ZK 3.4.11 with persistent volumes (both phases)
+
+ ZK data is persisted so sessions survive restart.
+ The ONLY difference is the client library version.
+
+[21:24:41] Cleaning up...
+[21:24:41] Pulling images...
+3.4.11: Pulling from library/zookeeper
+Digest: sha256:b7f6fda20bee82b13abf65d760e5cbeb4c202fc1d0840d0d9fd09bac83adb181
+Status: Image is up to date for zookeeper:3.4.11
+docker.io/library/zookeeper:3.4.11
+2.11-1.1.1: Pulling from wurstmeister/kafka
+Digest: sha256:d9da48245eae1483ddac898837a1435492c4d4a30e9a50e88bddeccf9c164084
+Status: Image is up to date for wurstmeister/kafka:2.11-1.1.1
+docker.io/wurstmeister/kafka:2.11-1.1.1
+2.13-2.8.1: Pulling from wurstmeister/kafka
+Digest: sha256:2d4bbf9cc83d9854d36582987da5f939fb9255fb128d18e3cf2c6ad825a32751
+Status: Image is up to date for wurstmeister/kafka:2.13-2.8.1
+docker.io/wurstmeister/kafka:2.13-2.8.1
+
+
+ PHASE 1: BUGGY CLIENT (Kafka 1.1.1 → ZK client 3.4.10)
+ ZK server: 3.4.11 with persistent data volume
+
+ Expecting: Client caches OLD IP, can't reach new ZK
+
+
+2388de8c00a234882f5c3bfaba66aedc3a2a65d6fd906371f9b0b717e1d7700b
+zk-data-buggy
+zk-datalog-buggy
+[21:24:43] Starting ZooKeeper 3.4.11 at 172.30.0.10 (with persistent volume)...
+4171209ceadd69f392ba6735674792d046b62fe722fdd22673da567a6c82009c
+[21:24:43] Waiting for ZK...
+[PASS] ZooKeeper 3.4.11 running at 172.30.0.10
+[21:24:47] Starting Kafka 1.1.1 (bundles ZK client 3.4.10, pre-fix)...
+efc65cc22e8e2e5b9c1372c22ba023131931e8acb823e0f2d7a1675853aeb309
+[21:24:47] Waiting 30s for Kafka to register...
+[PASS] Kafka broker registered in ZK at /brokers/ids/1
+[21:25:19] Initial ZK state:
+SessionTracker dump:
+Session Sets (3):
+0 expire at Thu Jan 01 00:42:44 GMT 1970:
+0 expire at Thu Jan 01 00:42:50 GMT 1970:
+1 expire at Thu Jan 01 00:42:54 GMT 1970:
+        0x100002696410000
+ephemeral nodes dump:
+Sessions with Ephemerals (1):
+0x100002696410000:
+        /controller
+        /brokers/ids/1
+
+[21:25:19] Cached IP:
+172.30.0.10       zookeeper  zookeeper
+
+[21:25:19] >>> Stopping ZooKeeper (data persisted on volume)...
+zk-buggy
+zk-buggy
+[21:25:20] >>> Restarting ZooKeeper 3.4.11 at NEW IP 172.30.0.20 (same data)...
+761da0a6850d0efcda52a499583a5a50e57e9514d398b46ece11b521e6b47ccb
+[PASS] ZooKeeper restarted at 172.30.0.20 (with preserved session data)
+[21:25:23] Docker DNS now resolves 'zookeeper' to:
+172.30.0.20       zookeeper  zookeeper
+
+[21:25:23] Waiting 60 seconds for Kafka to attempt reconnection...
+    (Buggy client cached 172.30.0.10, will never try 172.30.0.20)
+[21:26:27] Kafka connection logs (last 25 lines):
+--------------------------------------------------------------------
+[2026-03-25 01:24:48,968] INFO [ExpirationReaper-1-Produce]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:24:48,968] INFO [ExpirationReaper-1-Fetch]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:24:48,968] INFO [ExpirationReaper-1-DeleteRecords]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:24:49,023] INFO [ExpirationReaper-1-topic]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:24:49,025] INFO [ExpirationReaper-1-Heartbeat]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:24:49,026] INFO [ExpirationReaper-1-Rebalance]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:24:49,037] INFO [GroupMetadataManager brokerId=1] Removed 0 expired offsets in 1 milliseconds. (kafka.coordinator.group.GroupMetadataManager)
+[2026-03-25 01:25:19,897] INFO Unable to read additional data from server sessionid 0x100002696410000, likely server has closed socket, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:21,081] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:36,095] WARN Client session timed out, have not heard from server in 16098ms for sessionid 0x100002696410000 (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:36,096] INFO Client session timed out, have not heard from server in 16098ms for sessionid 0x100002696410000, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:37,462] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:54,312] WARN Client session timed out, have not heard from server in 18116ms for sessionid 0x100002696410000 (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:54,312] INFO Client session timed out, have not heard from server in 18116ms for sessionid 0x100002696410000, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:25:56,298] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:02,430] WARN Session 0x100002696410000 for server null, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:04,282] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:07,356] WARN Session 0x100002696410000 for server null, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:08,625] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:11,676] WARN Session 0x100002696410000 for server null, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:13,675] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:18,556] WARN Session 0x100002696410000 for server null, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:19,992] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:23,068] WARN Session 0x100002696410000 for server null, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:26:24,930] INFO Opening socket connection to server zk-buggy.zk2184-buggy-net/172.30.0.10:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+--------------------------------------------------------------------
+
+[21:26:27] KEY: Check the IP in 'Opening socket connection' lines.
+     BUGGY client should show OLD IP 172.30.0.10
+
+[FAIL] Kafka CANNOT reconnect (BUG CONFIRMED — client stuck on old IP)
+[21:26:27] ZK dump (should show no Kafka broker):
+SessionTracker dump:
+Session Sets (0):
+ephemeral nodes dump:
+Sessions with Ephemerals (0):
+
+[21:26:27] Cleaning up Phase 1...
+zk-buggy-newip
+kafka-buggy
+zk2184-buggy-net
+zk-data-buggy
+zk-datalog-buggy
+
+
+ PHASE 2: FIXED CLIENT (Kafka 2.8.1 → ZK client 3.5.9)
+ ZK server: 3.4.11 with persistent data volume
+
+ Expecting: Client re-resolves hostname, reconnects fully
+
+
+70aefdfbe65ce67eb60c061c4268cbe6e8e644279cfbf87f8110b6a1436430cb
+zk-data-fixed
+zk-datalog-fixed
+[21:26:28] Starting ZooKeeper 3.4.11 at 172.31.0.10 (with persistent volume)...
+1ea9d77dda05c5a5463c6619ca3627b9b966044266c51e70c7d9b464cf8a476f
+[PASS] ZooKeeper 3.4.11 running at 172.31.0.10
+[21:26:31] Starting Kafka 2.8.1 (bundles ZK client 3.5.9, post-fix)...
+c2786a39fc245873ea1c85802511a70b3c9df193833de1419215f1b448c06654
+[21:26:32] Waiting 30s for Kafka to register...
+[PASS] Kafka broker registered in ZK at /brokers/ids/1
+[21:27:04] Initial ZK state:
+SessionTracker dump:
+Session Sets (3):
+0 expire at Thu Jan 01 00:44:24 GMT 1970:
+0 expire at Thu Jan 01 00:44:30 GMT 1970:
+1 expire at Thu Jan 01 00:44:34 GMT 1970:
+        0x10000281ac20000
+ephemeral nodes dump:
+Sessions with Ephemerals (1):
+0x10000281ac20000:
+        /controller
+        /brokers/ids/1
+
+[21:27:04] >>> Stopping ZooKeeper (data persisted on volume)...
+zk-fixed
+zk-fixed
+[21:27:04] >>> Restarting ZooKeeper 3.4.11 at NEW IP 172.31.0.20 (same data)...
+dca482e645b9680772fd4538c703db5a13bf690f5b87467f6d8d39534e13a37e
+[PASS] ZooKeeper restarted at 172.31.0.20 (with preserved session data)
+[21:27:08] Waiting 60 seconds for Kafka to reconnect...
+    (Fixed client should re-resolve 'zookeeper' to 172.31.0.20
+     AND resume session since ZK data is preserved)
+[21:28:11] Kafka connection logs (last 25 lines):
+--------------------------------------------------------------------
+[2026-03-25 01:26:33,440] INFO Session establishment complete on server zookeeper/172.31.0.10:2181, sessionid = 0x10000281ac20000, negotiated timeout = 15000 (org.apache.zookeeper.ClientCnxn)
+        broker.session.timeout.ms = 9000
+        group.max.session.timeout.ms = 1800000
+        group.min.session.timeout.ms = 6000
+        max.incremental.fetch.session.cache.slots = 1000
+        transaction.remove.expired.transaction.cleanup.interval.ms = 3600000
+        zookeeper.session.timeout.ms = 15000
+        broker.session.timeout.ms = 9000
+        group.max.session.timeout.ms = 1800000
+        group.min.session.timeout.ms = 6000
+        max.incremental.fetch.session.cache.slots = 1000
+        transaction.remove.expired.transaction.cleanup.interval.ms = 3600000
+        zookeeper.session.timeout.ms = 15000
+[2026-03-25 01:26:34,100] INFO [ExpirationReaper-1-Produce]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,100] INFO [ExpirationReaper-1-Fetch]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,101] INFO [ExpirationReaper-1-DeleteRecords]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,102] INFO [ExpirationReaper-1-ElectLeader]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,180] INFO [ExpirationReaper-1-topic]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,185] INFO [ExpirationReaper-1-Heartbeat]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,186] INFO [ExpirationReaper-1-Rebalance]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:26:34,236] INFO [ExpirationReaper-1-AlterAcls]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2026-03-25 01:27:04,603] INFO Unable to read additional data from server sessionid 0x10000281ac20000, likely server has closed socket, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:27:06,580] INFO Opening socket connection to server zookeeper/172.31.0.20:2181. Will not attempt to authenticate using SASL (unknown error) (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:27:06,581] INFO Socket connection established, initiating session, client: /172.31.0.30:42944, server: zookeeper/172.31.0.20:2181 (org.apache.zookeeper.ClientCnxn)
+[2026-03-25 01:27:06,587] INFO Session establishment complete on server zookeeper/172.31.0.20:2181, sessionid = 0x10000281ac20000, negotiated timeout = 15000 (org.apache.zookeeper.ClientCnxn)
+--------------------------------------------------------------------
+
+[21:28:12] KEY: Check the IP in 'Opening socket connection' lines.
+     FIXED client should show NEW IP 172.31.0.20
+
+[PASS] Kafka RECONNECTED and re-registered (FIX FULLY CONFIRMED)
+[21:28:12] ZK dump (should show broker at /brokers/ids/1):
+SessionTracker dump:
+Session Sets (3):
+0 expire at Thu Jan 01 00:45:30 GMT 1970:
+0 expire at Thu Jan 01 00:45:34 GMT 1970:
+1 expire at Thu Jan 01 00:45:40 GMT 1970:
+        0x10000281ac20000
+ephemeral nodes dump:
+Sessions with Ephemerals (1):
+0x10000281ac20000:
+        /controller
+        /brokers/ids/1
+
+[21:28:12] Cleaning up Phase 2...
+zk-fixed-newip
+kafka-fixed
+zk2184-fixed-net
+zk-data-fixed
+zk-datalog-fixed
+
+
+ SUMMARY
+
+
+ Phase 1 (BUGGY — ZK client 3.4.10):
+   Client cached IP at startup → never re-resolved
+   Kept trying OLD IP → connection refused
+   ZK dump: 0 sessions, 0 ephemeral nodes
+
+ Phase 2 (FIXED — ZK client 3.5.9):
+   Client re-resolved hostname → found new IP
+   Connected to new ZK → resumed session (data preserved)
+   ZK dump: broker re-registered at /brokers/ids/1
+
+ Bug: StaticHostProvider.java cached DNS resolution forever
+ Fix: ZOOKEEPER-2184 (merged into ZK 3.5.4 and 3.4.12)
+
+hudsonre@enterprise:~/EC528/zookeeper_bugs/zk-2184$
