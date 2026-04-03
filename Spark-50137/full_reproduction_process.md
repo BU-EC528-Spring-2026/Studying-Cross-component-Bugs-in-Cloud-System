@@ -54,11 +54,3 @@ bash scripts/run_repro.sh
 bash scripts/collect_evidence.sh
 ```
 
-## Successful reproduction evidence
-
-A successful run should show:
-
-- the added test name
-- metastore/thrift connection failure
-- the incorrect fallback warning
-- `BUILD SUCCESS`
