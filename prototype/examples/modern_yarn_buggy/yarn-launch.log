@@ -1,0 +1,2 @@
+Container launch script begins
+exec /usr/bin/java -server -Dregion=us-east-1 -Dfeature.alpha=false -Dregion=us-west-2 -Dtrace=true -cp __spark_conf__:__hadoop_conf__ org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://driver --executor-id 1
