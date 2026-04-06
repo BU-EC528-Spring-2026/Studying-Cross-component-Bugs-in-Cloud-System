@@ -1,4 +1,4 @@
-# EC528 ConfigPropGuard v0.2
+# ConfigPropGuard v0.2
 
 Prototype detector for the **Configuration Propagation / Feature Gating** layer of cross-system bugs.
 
