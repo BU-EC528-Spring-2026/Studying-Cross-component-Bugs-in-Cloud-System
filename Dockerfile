@@ -8,7 +8,11 @@ COPY examples ./examples
 COPY policies ./policies
 COPY README.md .
 COPY ENVIRONMENT_PROFILE.md .
+COPY entrypoint.sh .
+COPY run_case1.sh .
+COPY run_case2.sh .
 
-RUN chmod +x /app/bin/*.py
+RUN chmod +x /app/bin/*.py /app/entrypoint.sh /app/run_case1.sh /app/run_case2.sh
 
-CMD ["bash"]
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["help"]
