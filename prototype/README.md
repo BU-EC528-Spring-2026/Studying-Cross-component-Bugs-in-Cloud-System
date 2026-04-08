@@ -53,18 +53,19 @@ It includes:
 - **CFG006**: policy-driven deployment gate checks
   - prototype policy engine for required keys and equal-value constraints
 
-## Example quick start
+##  quick start
+### Case1:
 ### 1) Build a submission manifest
 ```bash
 python3 bin/capture_submit_intent.py \
   --command-file examples/modern_yarn_buggy/submit.cmd \
-  --json-out reports/modern-buggy-intent.json
+  --json-out reports/modern_yarn_buggy-intent.json
 ```
 
 ### 2) Run the detector
 ```bash
 python3 bin/configprop_guard.py \
-  --intent reports/modern-buggy-intent.json \
+  --intent reports/modern_yarn_buggy-intent.json \
   --spark-defaults examples/modern_yarn_buggy/spark-defaults.conf \
   --spark-env examples/modern_yarn_buggy/spark-env.sh \
   --yarn-launch-log examples/modern_yarn_buggy/yarn-launch.log \
@@ -73,8 +74,37 @@ python3 bin/configprop_guard.py \
   --hadoop-version 3.5.0 \
   --cluster-manager yarn \
   --deploy-mode cluster \
-  --json-out reports/modern-buggy-report.json \
-  --human-out reports/modern-buggy-report.txt
+  --json-out reports/manual-modern-buggy-report.json \
+  --human-out reports/manual-modern-buggy-report.txt
+```
+### 3) See buggy results
+```bash
+sed -n '1,200p' reports/manual-modern-buggy-report.txt
+```
+### 4) Regenerate fixed intents
+```bash
+python3 bin/capture_submit_intent.py \
+  --command-file examples/my_case_01/submit.cmd \
+  --json-out reports/my_case_01-intent.json
+```
+### 5) Run fixed
+```bash
+python3 bin/configprop_guard.py \
+  --intent reports/my_case_01-intent.json \
+  --spark-defaults examples/my_case_01/spark-defaults.conf \
+  --spark-env examples/my_case_01/spark-env.sh \
+  --yarn-launch-log examples/my_case_01/yarn-launch.log \
+  --policy policies/modern_yarn_python_policy.json \
+  --spark-version 3.5.7 \
+  --hadoop-version 3.5.0 \
+  --cluster-manager yarn \
+  --deploy-mode cluster \
+  --json-out reports/my_case_01-report.json \
+  --human-out reports/my_case_01-report.txt
+```
+### 6) See fixed results
+```bash
+sed -n '1,200p' reports/my_case_01-report.txt
 ```
 
 ## Included demo datasets
@@ -88,3 +118,60 @@ python3 bin/configprop_guard.py \
 - `modern_yarn_fixed`: PASS
 - `spark4_dual_jdk_buggy`: FAIL (missing explicit JDK propagation)
 - `spark4_dual_jdk_fixed`: PASS
+
+### Case2:
+### 1):
+```bash
+python3 bin/capture_submit_intent.py \
+  --command-file examples/spark4_dual_jdk_buggy/submit.cmd \
+  --json-out reports/spark4_dual_jdk_buggy-intent.json
+```
+
+### 2)
+```bash
+python3 bin/configprop_guard.py \
+  --intent reports/spark4_dual_jdk_buggy-intent.json \
+  --spark-defaults examples/spark4_dual_jdk_buggy/spark-defaults.conf \
+  --spark-env examples/spark4_dual_jdk_buggy/spark-env.sh \
+  --yarn-launch-log examples/spark4_dual_jdk_buggy/yarn-launch.log \
+  --policy policies/spark4_dual_jdk_policy.json \
+  --spark-version 4.1.1 \
+  --hadoop-version 3.5.0 \
+  --cluster-manager yarn \
+  --deploy-mode cluster \
+  --json-out reports/spark4_dual_jdk_buggy-report-v2.json \
+  --human-out reports/spark4_dual_jdk_buggy-report-v2.txt
+```
+
+### 3)
+```bash
+sed -n '1,200p' reports/spark4_dual_jdk_buggy-report-v2.txt
+```
+
+### 4)
+```bash
+python3 bin/capture_submit_intent.py \
+  --command-file examples/spark4_dual_jdk_fixed/submit.cmd \
+  --json-out reports/spark4_dual_jdk_fixed-intent.json
+```
+
+### 5)
+```bash
+python3 bin/configprop_guard.py \
+  --intent reports/spark4_dual_jdk_fixed-intent.json \
+  --spark-defaults examples/spark4_dual_jdk_fixed/spark-defaults.conf \
+  --spark-env examples/spark4_dual_jdk_fixed/spark-env.sh \
+  --yarn-launch-log examples/spark4_dual_jdk_fixed/yarn-launch.log \
+  --policy policies/spark4_dual_jdk_policy.json \
+  --spark-version 4.1.1 \
+  --hadoop-version 3.5.0 \
+  --cluster-manager yarn \
+  --deploy-mode cluster \
+  --json-out reports/spark4_dual_jdk_fixed-report-v2.json \
+  --human-out reports/spark4_dual_jdk_fixed-report-v2.txt
+```
+
+### 6)
+```bash
+sed -n '1,200p' reports/spark4_dual_jdk_fixed-report-v2.txt
+```
