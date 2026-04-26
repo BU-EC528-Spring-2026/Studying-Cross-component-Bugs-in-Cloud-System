@@ -1,0 +1,188 @@
+Warning: Ignoring non-spark config property: javax.jdo.option.ConnectionURL=jdbc:derby:;databaseName=/tmp/spark11972-buggy-spark-1.6.0/metastore_db;create=true
+log4j:WARN No appenders could be found for logger (org.apache.hadoop.util.Shell).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+26/04/26 02:55:54 INFO SparkContext: Running Spark version 1.6.0
+26/04/26 02:55:54 INFO SecurityManager: Changing view acls to: root
+26/04/26 02:55:54 INFO SecurityManager: Changing modify acls to: root
+26/04/26 02:55:54 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(root); users with modify permissions: Set(root)
+26/04/26 02:55:54 INFO Utils: Successfully started service 'sparkDriver' on port 35173.
+26/04/26 02:55:54 INFO Slf4jLogger: Slf4jLogger started
+26/04/26 02:55:54 INFO Remoting: Starting remoting
+26/04/26 02:55:54 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriverActorSystem@127.0.0.1:45533]
+26/04/26 02:55:54 INFO Utils: Successfully started service 'sparkDriverActorSystem' on port 45533.
+26/04/26 02:55:54 INFO SparkEnv: Registering MapOutputTracker
+26/04/26 02:55:54 INFO SparkEnv: Registering BlockManagerMaster
+26/04/26 02:55:54 INFO DiskBlockManager: Created local directory at /tmp/spark11972-buggy-spark-1.6.0/tmp/blockmgr-6034344f-3ab6-406f-aa78-631a909d89c4
+26/04/26 02:55:54 INFO MemoryStore: MemoryStore started with capacity 511.1 MB
+26/04/26 02:55:54 INFO SparkEnv: Registering OutputCommitCoordinator
+26/04/26 02:55:54 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/04/26 02:55:54 INFO SparkUI: Started SparkUI at http://127.0.0.1:4040
+26/04/26 02:55:54 INFO Executor: Starting executor ID driver on host localhost
+26/04/26 02:55:54 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 36631.
+26/04/26 02:55:54 INFO NettyBlockTransferService: Server created on 36631
+26/04/26 02:55:54 INFO BlockManagerMaster: Trying to register BlockManager
+26/04/26 02:55:54 INFO BlockManagerMasterEndpoint: Registering block manager localhost:36631 with 511.1 MB RAM, BlockManagerId(driver, localhost, 36631)
+26/04/26 02:55:54 INFO BlockManagerMaster: Registered BlockManager
+26/04/26 02:55:55 INFO HiveContext: Initializing execution hive, version 1.2.1
+26/04/26 02:55:55 INFO ClientWrapper: Inspected Hadoop version: 2.6.0
+26/04/26 02:55:55 INFO ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+26/04/26 02:55:55 INFO metastore: Mestastore configuration hive.metastore.warehouse.dir changed from file:/tmp/spark-5e05fbc1-69a2-44ef-9b64-6752e36bd6f3/metastore to file:/tmp/spark-7f711419-037d-4c48-bc94-e238c74a1098/metastore
+26/04/26 02:55:55 INFO metastore: Mestastore configuration javax.jdo.option.ConnectionURL changed from jdbc:derby:;databaseName=/tmp/spark-5e05fbc1-69a2-44ef-9b64-6752e36bd6f3/metastore;create=true to jdbc:derby:;databaseName=/tmp/spark-7f711419-037d-4c48-bc94-e238c74a1098/metastore;create=true
+26/04/26 02:55:55 INFO HiveMetaStore: 0: Shutting down the object store...
+26/04/26 02:55:55 INFO audit: ugi=root	ip=unknown-ip-addr	cmd=Shutting down the object store...	
+26/04/26 02:55:55 INFO HiveMetaStore: 0: Metastore shutdown complete.
+26/04/26 02:55:55 INFO audit: ugi=root	ip=unknown-ip-addr	cmd=Metastore shutdown complete.	
+26/04/26 02:55:55 INFO HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+26/04/26 02:55:55 INFO ObjectStore: ObjectStore, initialize called
+26/04/26 02:55:55 INFO Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+26/04/26 02:55:55 INFO Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+26/04/26 02:55:55 WARN Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+26/04/26 02:55:55 WARN Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+26/04/26 02:55:55 INFO ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+26/04/26 02:55:55 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:55 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:55 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:55 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:55 INFO MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+26/04/26 02:55:55 INFO ObjectStore: Initialized ObjectStore
+26/04/26 02:55:55 WARN ObjectStore: Failed to get database default, returning NoSuchObjectException
+26/04/26 02:55:55 INFO HiveMetaStore: Added admin role in metastore
+26/04/26 02:55:55 INFO HiveMetaStore: Added public role in metastore
+26/04/26 02:55:56 INFO HiveMetaStore: No user is added in admin role, since config is empty
+26/04/26 02:55:56 INFO SessionState: Created local directory: /tmp/c6ca812f-d3e7-4694-a598-9daf5ec17f11_resources
+26/04/26 02:55:56 INFO SessionState: Created HDFS directory: /tmp/hive/root/c6ca812f-d3e7-4694-a598-9daf5ec17f11
+26/04/26 02:55:56 INFO SessionState: Created local directory: /tmp/root/c6ca812f-d3e7-4694-a598-9daf5ec17f11
+26/04/26 02:55:56 INFO SessionState: Created HDFS directory: /tmp/hive/root/c6ca812f-d3e7-4694-a598-9daf5ec17f11/_tmp_space.db
+26/04/26 02:55:56 INFO HiveContext: default warehouse location is /user/hive/warehouse
+26/04/26 02:55:56 INFO HiveContext: Initializing HiveMetastoreConnection version 1.2.1 using Spark classes.
+26/04/26 02:55:56 INFO ClientWrapper: Inspected Hadoop version: 2.6.0
+26/04/26 02:55:56 INFO ClientWrapper: Loaded org.apache.hadoop.hive.shims.Hadoop23Shims for Hadoop version 2.6.0
+26/04/26 02:55:56 INFO HiveMetaStore: 0: Opening raw store with implemenation class:org.apache.hadoop.hive.metastore.ObjectStore
+26/04/26 02:55:56 INFO ObjectStore: ObjectStore, initialize called
+26/04/26 02:55:56 INFO Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+26/04/26 02:55:56 INFO Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+26/04/26 02:55:56 WARN Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+26/04/26 02:55:56 WARN Connection: BoneCP specified but not present in CLASSPATH (or one of dependencies)
+26/04/26 02:55:57 INFO ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+26/04/26 02:55:57 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:57 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:57 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MFieldSchema" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:57 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MOrder" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:57 INFO MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+26/04/26 02:55:57 INFO ObjectStore: Initialized ObjectStore
+26/04/26 02:55:57 WARN ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 1.2.0
+26/04/26 02:55:57 WARN ObjectStore: Failed to get database default, returning NoSuchObjectException
+26/04/26 02:55:57 INFO HiveMetaStore: Added admin role in metastore
+26/04/26 02:55:57 INFO HiveMetaStore: Added public role in metastore
+26/04/26 02:55:55 INFO HiveMetaStore: No user is added in admin role, since config is empty
+26/04/26 02:55:55 INFO HiveMetaStore: 0: get_all_databases
+26/04/26 02:55:55 INFO audit: ugi=root	ip=unknown-ip-addr	cmd=get_all_databases	
+26/04/26 02:55:55 INFO HiveMetaStore: 0: get_functions: db=default pat=*
+26/04/26 02:55:55 INFO audit: ugi=root	ip=unknown-ip-addr	cmd=get_functions: db=default pat=*	
+26/04/26 02:55:55 INFO Datastore: The class "org.apache.hadoop.hive.metastore.model.MResourceUri" is tagged as "embedded-only" so does not have its own datastore table.
+26/04/26 02:55:55 INFO SessionState: Created local directory: /tmp/89580b89-f512-4eb7-a00d-fedb5850e765_resources
+26/04/26 02:55:55 INFO SessionState: Created HDFS directory: /tmp/hive/root/89580b89-f512-4eb7-a00d-fedb5850e765
+26/04/26 02:55:55 INFO SessionState: Created local directory: /tmp/root/89580b89-f512-4eb7-a00d-fedb5850e765
+26/04/26 02:55:55 INFO SessionState: Created HDFS directory: /tmp/hive/root/89580b89-f512-4eb7-a00d-fedb5850e765/_tmp_space.db
+SET spark.sql.hive.version=1.2.1
+26/04/26 02:55:56 INFO ParseDriver: Parsing command: DROP TABLE IF EXISTS ${hiveconf:RESULT_TABLE}
+NoViableAltException(16@[192:1: tableName : (db= identifier DOT tab= identifier -> ^( TOK_TABNAME $db $tab) |tab= identifier -> ^( TOK_TABNAME $tab) );])
+	at org.antlr.runtime.DFA.noViableAlt(DFA.java:158)
+	at org.antlr.runtime.DFA.predict(DFA.java:144)
+	at org.apache.hadoop.hive.ql.parse.HiveParser_FromClauseParser.tableName(HiveParser_FromClauseParser.java:4747)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.tableName(HiveParser.java:45918)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.dropTableStatement(HiveParser.java:7133)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2655)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1650)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1109)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:202)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.spark.sql.hive.HiveQl$.getAst(HiveQl.scala:276)
+	at org.apache.spark.sql.hive.HiveQl$.createPlan(HiveQl.scala:303)
+	at org.apache.spark.sql.hive.ExtendedHiveQlParser$$anonfun$hiveQl$1.apply(ExtendedHiveQlParser.scala:41)
+	at org.apache.spark.sql.hive.ExtendedHiveQlParser$$anonfun$hiveQl$1.apply(ExtendedHiveQlParser.scala:40)
+	at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:136)
+	at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:135)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+	at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$Failure.append(Parsers.scala:202)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+	at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+	at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)
+	at scala.util.parsing.combinator.Parsers$$anon$2.apply(Parsers.scala:890)
+	at scala.util.parsing.combinator.PackratParsers$$anon$1.apply(PackratParsers.scala:110)
+	at org.apache.spark.sql.catalyst.AbstractSparkSQLParser.parse(AbstractSparkSQLParser.scala:34)
+	at org.apache.spark.sql.hive.HiveQl$.parseSql(HiveQl.scala:295)
+	at org.apache.spark.sql.hive.HiveQLDialect$$anonfun$parse$1.apply(HiveContext.scala:66)
+	at org.apache.spark.sql.hive.HiveQLDialect$$anonfun$parse$1.apply(HiveContext.scala:66)
+	at org.apache.spark.sql.hive.client.ClientWrapper$$anonfun$withHiveState$1.apply(ClientWrapper.scala:279)
+	at org.apache.spark.sql.hive.client.ClientWrapper.liftedTree1$1(ClientWrapper.scala:226)
+	at org.apache.spark.sql.hive.client.ClientWrapper.retryLocked(ClientWrapper.scala:225)
+	at org.apache.spark.sql.hive.client.ClientWrapper.withHiveState(ClientWrapper.scala:268)
+	at org.apache.spark.sql.hive.HiveQLDialect.parse(HiveContext.scala:65)
+	at org.apache.spark.sql.SQLContext$$anonfun$2.apply(SQLContext.scala:211)
+	at org.apache.spark.sql.SQLContext$$anonfun$2.apply(SQLContext.scala:211)
+	at org.apache.spark.sql.execution.SparkSQLParser$$anonfun$org$apache$spark$sql$execution$SparkSQLParser$$others$1.apply(SparkSQLParser.scala:114)
+	at org.apache.spark.sql.execution.SparkSQLParser$$anonfun$org$apache$spark$sql$execution$SparkSQLParser$$others$1.apply(SparkSQLParser.scala:113)
+	at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:136)
+	at scala.util.parsing.combinator.Parsers$Success.map(Parsers.scala:135)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$map$1.apply(Parsers.scala:242)
+	at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1$$anonfun$apply$2.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$Failure.append(Parsers.scala:202)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$Parser$$anonfun$append$1.apply(Parsers.scala:254)
+	at scala.util.parsing.combinator.Parsers$$anon$3.apply(Parsers.scala:222)
+	at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+	at scala.util.parsing.combinator.Parsers$$anon$2$$anonfun$apply$14.apply(Parsers.scala:891)
+	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)
+	at scala.util.parsing.combinator.Parsers$$anon$2.apply(Parsers.scala:890)
+	at scala.util.parsing.combinator.PackratParsers$$anon$1.apply(PackratParsers.scala:110)
+	at org.apache.spark.sql.catalyst.AbstractSparkSQLParser.parse(AbstractSparkSQLParser.scala:34)
+	at org.apache.spark.sql.SQLContext$$anonfun$1.apply(SQLContext.scala:208)
+	at org.apache.spark.sql.SQLContext$$anonfun$1.apply(SQLContext.scala:208)
+	at org.apache.spark.sql.execution.datasources.DDLParser.parse(DDLParser.scala:43)
+	at org.apache.spark.sql.SQLContext.parseSql(SQLContext.scala:231)
+	at org.apache.spark.sql.hive.HiveContext.parseSql(HiveContext.scala:331)
+	at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:817)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLDriver.run(SparkSQLDriver.scala:63)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.processCmd(SparkSQLCLIDriver.scala:308)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:311)
+	at org.apache.hadoop.hive.cli.CliDriver.processReader(CliDriver.java:409)
+	at org.apache.hadoop.hive.cli.CliDriver.processFile(CliDriver.java:425)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:166)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Error in query: cannot recognize input near '$' '{' 'hiveconf' in table name; line 1 pos 21
+26/04/26 02:55:56 INFO SparkUI: Stopped Spark web UI at http://127.0.0.1:4040
+26/04/26 02:55:56 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+26/04/26 02:55:56 INFO MemoryStore: MemoryStore cleared
+26/04/26 02:55:56 INFO BlockManager: BlockManager stopped
+26/04/26 02:55:56 INFO BlockManagerMaster: BlockManagerMaster stopped
+26/04/26 02:55:56 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+26/04/26 02:55:56 INFO RemoteActorRefProvider$RemotingTerminator: Shutting down remote daemon.
+26/04/26 02:55:56 INFO SparkContext: Successfully stopped SparkContext
+26/04/26 02:55:56 INFO RemoteActorRefProvider$RemotingTerminator: Remote daemon shut down; proceeding with flushing remote transports.
+26/04/26 02:55:56 INFO ShutdownHookManager: Shutdown hook called
+26/04/26 02:55:56 INFO ShutdownHookManager: Deleting directory /tmp/spark11972-buggy-spark-1.6.0/tmp/spark-13364e45-ee2b-442f-b9b3-5ce56194f1b3
+26/04/26 02:55:56 INFO ShutdownHookManager: Deleting directory /tmp/spark-7f711419-037d-4c48-bc94-e238c74a1098
+26/04/26 02:55:56 INFO ShutdownHookManager: Deleting directory /tmp/spark-5e05fbc1-69a2-44ef-9b64-6752e36bd6f3

@@ -1,0 +1,26 @@
+
+# Runtime outputs
+out/
+debug-runtime/
+**/out/
+**/debug-runtime/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Temporary helper scripts
+patch_*.sh
+make_*_final_evidence.sh

@@ -1,0 +1,107 @@
+### Runtime artifact file list
+debug-runtime/bench-out/spark-submit.log
+debug-runtime/bench-out/testbench.log
+debug-runtime/hadoop-logs/SecurityAuth-root.audit
+debug-runtime/hadoop-logs/hadoop--datanode-b6e616b075cb.log
+debug-runtime/hadoop-logs/hadoop--datanode-b6e616b075cb.out
+debug-runtime/hadoop-logs/hadoop--namenode-b6e616b075cb.log
+debug-runtime/hadoop-logs/hadoop--namenode-b6e616b075cb.out
+debug-runtime/hadoop-logs/yarn--nodemanager-b6e616b075cb.log
+debug-runtime/hadoop-logs/yarn--nodemanager-b6e616b075cb.out
+debug-runtime/hadoop-logs/yarn--resourcemanager-b6e616b075cb.log
+debug-runtime/hadoop-logs/yarn--resourcemanager-b6e616b075cb.out
+debug-runtime/hadoop-yarn/local/nmPrivate/.container_1777169818312_0001_01_000001.tokens.crc
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000001/.container_1777169818312_0001_01_000001.tokens.crc
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000001/.launch_container.sh.crc
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000001/container_1777169818312_0001_01_000001.tokens
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000001/launch_container.sh
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000002/.container_1777169818312_0001_01_000002.tokens.crc
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000002/.launch_container.sh.crc
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000002/container_1777169818312_0001_01_000002.tokens
+debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000002/launch_container.sh
+debug-runtime/hadoop-yarn/local/nmPrivate/container_1777169818312_0001_01_000001.tokens
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/.container_tokens.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/.default_container_executor.sh.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/.default_container_executor_session.sh.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/.launch_container.sh.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/container_tokens
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/default_container_executor.sh
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/default_container_executor_session.sh
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/launch_container.sh
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/.container_tokens.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/.default_container_executor.sh.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/.default_container_executor_session.sh.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/.launch_container.sh.crc
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/container_tokens
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/default_container_executor.sh
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/default_container_executor_session.sh
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/launch_container.sh
+debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/spark-examples-1.6.1-hadoop2.6.0.jar
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/__spark_conf__.properties
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/capacity-scheduler.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/configuration.xsl
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/container-executor.cfg
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/core-site.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/hadoop-env.cmd
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/hadoop-env.sh
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/hadoop-metrics.properties
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/hadoop-metrics2.properties
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/hadoop-policy.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/hdfs-site.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/httpfs-env.sh
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/httpfs-log4j.properties
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/httpfs-signature.secret
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/httpfs-site.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/kms-acls.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/kms-env.sh
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/kms-log4j.properties
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/kms-site.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/log4j.properties
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/mapred-env.cmd
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/mapred-env.sh
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/mapred-queues.xml.template
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/mapred-site.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/mapred-site.xml.template
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/slaves
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/ssl-client.xml.example
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/ssl-server.xml.example
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/yarn-env.cmd
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/yarn-env.sh
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/10/__spark_conf__1677322296073675376.zip/yarn-site.xml
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/11/.tmp_spark-assembly-1.6.1-hadoop2.6.0.jar.crc
+debug-runtime/hadoop-yarn/local/usercache/root/filecache/11/spark-assembly-1.6.1-hadoop2.6.0.jar
+debug-runtime/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stderr
+debug-runtime/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stdout
+debug-runtime/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stderr
+debug-runtime/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stdout
+
+### MaxPermSize lines across copied runtime artifacts
+/home/samuhong/ec528/hadoop-config-project/bugbench/SPARK-15067/debug-runtime/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stderr:46:    {{JAVA_HOME}}/bin/java -server -XX:OnOutOfMemoryError='kill %p' -Xms512m -Xmx512m '-XX:MaxPermSize=1024M' '-Dbugbench=SPARK-15067' -Djava.io.tmpdir={{PWD}}/tmp '-Dspark.driver.port=34361' -Dspark.yarn.app.container.log.dir=<LOG_DIR> org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://CoarseGrainedScheduler@172.17.0.2:34361 --executor-id 1 --hostname b6e616b075cb --cores 1 --app-id application_1777169818312_0001 --user-class-path file:$PWD/__app__.jar 1> <LOG_DIR>/stdout 2> <LOG_DIR>/stderr
+/home/samuhong/ec528/hadoop-config-project/bugbench/SPARK-15067/debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000002/launch_container.sh:41:exec /bin/bash -c "$JAVA_HOME/bin/java -server -XX:OnOutOfMemoryError='kill %p' -Xms512m -Xmx512m '-XX:MaxPermSize=1024M' '-Dbugbench=SPARK-15067' -Djava.io.tmpdir=$PWD/tmp '-Dspark.driver.port=34361' -Dspark.yarn.app.container.log.dir=/tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002 org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://CoarseGrainedScheduler@172.17.0.2:34361 --executor-id 1 --hostname b6e616b075cb --cores 1 --app-id application_1777169818312_0001 --user-class-path file:$PWD/__app__.jar 1> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stdout 2> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stderr"
+/home/samuhong/ec528/hadoop-config-project/bugbench/SPARK-15067/debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/launch_container.sh:41:exec /bin/bash -c "$JAVA_HOME/bin/java -server -XX:OnOutOfMemoryError='kill %p' -Xms512m -Xmx512m '-XX:MaxPermSize=1024M' '-Dbugbench=SPARK-15067' -Djava.io.tmpdir=$PWD/tmp '-Dspark.driver.port=34361' -Dspark.yarn.app.container.log.dir=/tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002 org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://CoarseGrainedScheduler@172.17.0.2:34361 --executor-id 1 --hostname b6e616b075cb --cores 1 --app-id application_1777169818312_0001 --user-class-path file:$PWD/__app__.jar 1> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stdout 2> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stderr"
+
+### launch_container.sh / default_container_executor.sh snippets
+--- FILE: debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000001/launch_container.sh
+6:export JAVA_HOME="/opt/java/openjdk"
+46:exec /bin/bash -c "$JAVA_HOME/bin/java -server -Xmx512m -Djava.io.tmpdir=$PWD/tmp -Dspark.yarn.app.container.log.dir=/tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001 org.apache.spark.deploy.yarn.ExecutorLauncher --arg '172.17.0.2:34361' --executor-memory 512m --executor-cores 1 --properties-file $PWD/__spark_conf__/__spark_conf__.properties 1> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stdout 2> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stderr"
+
+--- FILE: debug-runtime/hadoop-yarn/local/nmPrivate/application_1777169818312_0001/container_1777169818312_0001_01_000002/launch_container.sh
+6:export JAVA_HOME="/opt/java/openjdk"
+41:exec /bin/bash -c "$JAVA_HOME/bin/java -server -XX:OnOutOfMemoryError='kill %p' -Xms512m -Xmx512m '-XX:MaxPermSize=1024M' '-Dbugbench=SPARK-15067' -Djava.io.tmpdir=$PWD/tmp '-Dspark.driver.port=34361' -Dspark.yarn.app.container.log.dir=/tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002 org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://CoarseGrainedScheduler@172.17.0.2:34361 --executor-id 1 --hostname b6e616b075cb --cores 1 --app-id application_1777169818312_0001 --user-class-path file:$PWD/__app__.jar 1> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stdout 2> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stderr"
+
+--- FILE: debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/default_container_executor.sh
+
+--- FILE: debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/default_container_executor_session.sh
+
+--- FILE: debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000001/launch_container.sh
+6:export JAVA_HOME="/opt/java/openjdk"
+46:exec /bin/bash -c "$JAVA_HOME/bin/java -server -Xmx512m -Djava.io.tmpdir=$PWD/tmp -Dspark.yarn.app.container.log.dir=/tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001 org.apache.spark.deploy.yarn.ExecutorLauncher --arg '172.17.0.2:34361' --executor-memory 512m --executor-cores 1 --properties-file $PWD/__spark_conf__/__spark_conf__.properties 1> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stdout 2> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000001/stderr"
+
+--- FILE: debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/default_container_executor.sh
+
+--- FILE: debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/default_container_executor_session.sh
+
+--- FILE: debug-runtime/hadoop-yarn/local/usercache/root/appcache/application_1777169818312_0001/container_1777169818312_0001_01_000002/launch_container.sh
+6:export JAVA_HOME="/opt/java/openjdk"
+41:exec /bin/bash -c "$JAVA_HOME/bin/java -server -XX:OnOutOfMemoryError='kill %p' -Xms512m -Xmx512m '-XX:MaxPermSize=1024M' '-Dbugbench=SPARK-15067' -Djava.io.tmpdir=$PWD/tmp '-Dspark.driver.port=34361' -Dspark.yarn.app.container.log.dir=/tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002 org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://CoarseGrainedScheduler@172.17.0.2:34361 --executor-id 1 --hostname b6e616b075cb --cores 1 --app-id application_1777169818312_0001 --user-class-path file:$PWD/__app__.jar 1> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stdout 2> /tmp/hadoop-yarn/logs/application_1777169818312_0001/container_1777169818312_0001_01_000002/stderr"
+
