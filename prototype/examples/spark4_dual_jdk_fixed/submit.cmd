@@ -1,1 +1,0 @@
-./bin/spark-submit --master yarn --deploy-mode cluster --conf spark.app.name=Spark4DualJdkFixed --conf spark.yarn.appMasterEnv.JAVA_HOME=/opt/openjdk-17 --conf spark.executorEnv.JAVA_HOME=/opt/openjdk-17 app.py

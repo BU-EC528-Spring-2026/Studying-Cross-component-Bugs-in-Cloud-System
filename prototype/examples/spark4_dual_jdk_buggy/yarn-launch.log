@@ -1,2 +1,0 @@
-Container launch script begins
-exec /usr/bin/java -server -cp __spark_conf__:__hadoop_conf__ org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url spark://driver --executor-id 2

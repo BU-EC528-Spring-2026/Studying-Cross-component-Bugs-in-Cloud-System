@@ -1,9 +1,9 @@
-
 # Runtime outputs
 out/
 debug-runtime/
 **/out/
 **/debug-runtime/
+tests/results/
 
 # Archives
 *.zip
@@ -13,13 +13,26 @@ debug-runtime/
 
 # Python
 __pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
+*.pyd
+venv/
+**/venv/
+*.egg-info/
+**/*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
 
 # OS/editor
 .DS_Store
 .vscode/
 .idea/
+
+# WSL artifacts
+*_Zone.Identifier
 
 # Temporary helper scripts
 patch_*.sh

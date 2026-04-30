@@ -1,7 +1,0 @@
-SPARK-15067 real-version testbench summary
-
-user_flag_found=true
-fixed_default_found=false
-reproduced=false
-
-Artifacts saved in: /home/samuhong/ec528/hadoop-config-project/bugbench/SPARK-15067/final-evidence
