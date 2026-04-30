@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hadoop-config-checker"
+version = "0.1.0"
+description = "Configuration observability and consistency checking for Hadoop clusters."
+requires-python = ">=3.10"
+# Core package is dependency-free (stdlib only). Runtime extras add Kafka,
+# file watching, and CLI support.
+dependencies = []
+
+[project.optional-dependencies]
+runtime = [
+    "kafka-python",
+    "watchdog",
+    "click",
+    "pyyaml",
+]
+test = [
+    "pytest>=7",
+]
+
+[project.scripts]
+hadoopconf = "checker.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["checker*"]
+exclude = ["tests*", "simulate*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# ``importlib`` mode avoids putting rootdir on sys.path, which matters later
+# when the simulate/ and checker/ packages co-exist. It also sidesteps the
+# need for a sys.path hack in conftest.
+addopts = "-ra --strict-markers --import-mode=importlib"

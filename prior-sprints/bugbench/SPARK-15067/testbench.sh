@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUT_DIR=${OUT_DIR:-/bench/out}
+mkdir -p "$OUT_DIR"
+rm -rf /tmp/hadoop-root /tmp/hadoop-yarn
+mkdir -p /tmp/hadoop-root/dfs/name /tmp/hadoop-root/dfs/data /tmp/hadoop-yarn/local /tmp/hadoop-yarn/logs
+
+export HADOOP_HOME=${HADOOP_HOME:-/opt/hadoop-2.7.1}
+export SPARK_HOME=${SPARK_HOME:-/opt/spark-1.6.1-bin-hadoop2.6}
+export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-$HADOOP_HOME/etc/hadoop}
+export YARN_CONF_DIR=${YARN_CONF_DIR:-$HADOOP_HOME/etc/hadoop}
+export JAVA_HOME=${JAVA_HOME:-/opt/java/openjdk}
+export PATH="$SPARK_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH"
+
+LOG="$OUT_DIR/testbench.log"
+: > "$LOG"
+exec > >(tee -a "$LOG") 2>&1
+
+cleanup() {
+  set +e
+  yarn-daemon.sh stop nodemanager >/dev/null 2>&1
+  yarn-daemon.sh stop resourcemanager >/dev/null 2>&1
+  hadoop-daemon.sh stop datanode >/dev/null 2>&1
+  hadoop-daemon.sh stop namenode >/dev/null 2>&1
+}
+trap cleanup EXIT
+
+echo "=== SPARK-15067 real-version testbench ==="
+echo "Spark: $($SPARK_HOME/bin/spark-submit --version 2>&1 | head -n 5 | tr '\n' ' ')"
+echo "Hadoop: $($HADOOP_HOME/bin/hadoop version | head -n 1)"
+echo "Java: $(java -version 2>&1 | head -n 1)"
+
+echo "=== Formatting and starting HDFS/YARN ==="
+hdfs namenode -format -force -nonInteractive
+hadoop-daemon.sh start namenode
+hadoop-daemon.sh start datanode
+yarn-daemon.sh start resourcemanager
+yarn-daemon.sh start nodemanager
+
+echo "=== Waiting for HDFS ==="
+for i in $(seq 1 60); do
+  if hdfs dfs -ls / >/dev/null 2>&1; then
+    break
+  fi
+  sleep 1
+  if [[ "$i" == "60" ]]; then
+    echo "HDFS did not become ready" >&2
+    exit 1
+  fi
+done
+hdfs dfs -mkdir -p /user/root /tmp/spark-events || true
+
+echo "=== Waiting for YARN ResourceManager ==="
+for i in $(seq 1 60); do
+  if yarn node -list 2>/dev/null | grep -q "RUNNING"; then
+    break
+  fi
+  sleep 1
+  if [[ "$i" == "60" ]]; then
+    echo "YARN did not report a RUNNING NodeManager" >&2
+    yarn node -list || true
+    exit 1
+  fi
+done
+
+echo "=== Running Spark 1.6.1 SparkPi on real YARN ==="
+SPARK_EXAMPLES_JAR=$(ls "$SPARK_HOME"/lib/spark-examples-*-hadoop*.jar | head -n 1)
+set +e
+spark-submit \
+  --master yarn \
+  --deploy-mode client \
+  --class org.apache.spark.examples.SparkPi \
+  --num-executors 1 \
+  --executor-cores 1 \
+  --executor-memory 512m \
+  --conf spark.yarn.executor.memoryOverhead=384 \
+  --conf "spark.executor.extraJavaOptions=-XX:MaxPermSize=1024M -Dbugbench=SPARK-15067" \
+  "$SPARK_EXAMPLES_JAR" \
+  2 > "$OUT_DIR/spark-submit.log" 2>&1
+SPARK_RC=$?
+set -e
+cat "$OUT_DIR/spark-submit.log"
+if [[ "$SPARK_RC" != "0" ]]; then
+  echo "spark-submit exited with $SPARK_RC" >&2
+  exit "$SPARK_RC"
+fi
+
+echo "=== Capturing real YARN launch evidence ==="
+set +e
+
+: > "$OUT_DIR/yarn-launch-evidence.txt"
+
+# Avoid calling `yarn application -list` here. In this one-container bench,
+# that command can terminate the script before evidence collection finishes.
+echo "Writing NodeManager file lists..."
+find /tmp/hadoop-yarn/local -type f 2>/dev/null | sort > "$OUT_DIR/nodemanager-local-files.txt" || true
+find /tmp/hadoop-yarn/logs -type f 2>/dev/null | sort > "$OUT_DIR/nodemanager-log-files.txt" || true
+find "$HADOOP_HOME/logs" -type f 2>/dev/null | sort > "$OUT_DIR/hadoop-log-files.txt" || true
+
+echo "Collecting MaxPermSize and launch evidence..."
+{
+  echo "### spark-submit.log"
+  grep -n "MaxPermSize\|extraJavaOptions\|SPARK-15067" "$OUT_DIR/spark-submit.log" 2>/dev/null || true
+  echo
+
+  echo "### NodeManager local dirs"
+  grep -R -n -- "-XX:MaxPermSize" /tmp/hadoop-yarn/local 2>/dev/null || true
+  echo
+
+  echo "### NodeManager user logs"
+  grep -R -n -- "-XX:MaxPermSize" /tmp/hadoop-yarn/logs 2>/dev/null || true
+  echo
+
+  echo "### Hadoop daemon logs"
+  grep -R -n -- "-XX:MaxPermSize" "$HADOOP_HOME/logs" 2>/dev/null || true
+  echo
+
+  echo "### Launch-related files"
+  find /tmp/hadoop-yarn/local -type f \( -name 'launch_container.sh' -o -name 'default_container_executor.sh' -o -name '*.cmd' \) 2>/dev/null | sort | while read -r f; do
+    echo "--- FILE: $f"
+    grep -n "MaxPermSize\|java\|SPARK-15067" "$f" 2>/dev/null || true
+    echo
+  done
+} >> "$OUT_DIR/yarn-launch-evidence.txt"
+
+echo "Running assertion..."
+python3 /bench/assert_spark_15067.py "$OUT_DIR/yarn-launch-evidence.txt" "$OUT_DIR/repro-result.json"
+ASSERT_RC=$?
+
+echo "=== Artifacts written to $OUT_DIR ==="
+ls -lh "$OUT_DIR"
+exit "$ASSERT_RC"

@@ -1,0 +1,1 @@
+./bin/spark-submit --master yarn --deploy-mode cluster --conf spark.executor.defaultJavaOptions="-Dregion=us-east-1 -Dfeature.alpha=false" --conf spark.executor.extraJavaOptions="-Dregion=us-west-2 -Dtrace=true" --conf yarn.resourcemanager.address=rm:8032 app.py

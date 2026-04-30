@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+# demo.sh — screen recording walkthrough for hadoop-config-checker
+# Run from the repo root: bash demo.sh
+
+set -uo pipefail
+cd "$HOME/EC528/hadoop-config-project"
+
+# Make sure shell env doesn't override the kafka bootstrap
+unset CHECKER_KAFKA_BOOTSTRAP 2>/dev/null || true
+
+# ---------------------------------------------------------------------------
+# Preflight: wait for checker and all agents to be stable before starting.
+# If any container is still restarting, stop and print a clear fix.
+# ---------------------------------------------------------------------------
+
+echo "=== Preflight: waiting for all containers to be stable... ==="
+
+WAIT_DEADLINE=$(( $(date +%s) + 60 ))
+RESTARTING=""
+while [ "$(date +%s)" -lt "$WAIT_DEADLINE" ]; do
+  RESTARTING=$(docker compose ps --format json 2>/dev/null \
+    | python3 -c "
+import sys, json
+bad = []
+for line in sys.stdin:
+    line = line.strip()
+    if not line: continue
+    try:
+        obj = json.loads(line)
+        if obj.get('State') == 'restarting':
+            bad.append(obj['Name'])
+    except Exception:
+        pass
+print('\n'.join(bad))
+" 2>/dev/null || true)
+  if [ -z "$RESTARTING" ]; then
+    break
+  fi
+  echo "  still restarting: $(echo $RESTARTING | tr '\n' ' ')"
+  sleep 5
+done
+
+if [ -n "$RESTARTING" ]; then
+  echo ""
+  echo "ERROR: the following containers are stuck restarting:"
+  echo "$RESTARTING"
+  echo ""
+  echo "Most likely cause: CHECKER_KAFKA_BOOTSTRAP was set to localhost:9094 when"
+  echo "the stack was created. Fix with:"
+  echo "  unset CHECKER_KAFKA_BOOTSTRAP && docker compose up -d --force-recreate"
+  exit 1
+fi
+
+echo "  all containers stable."
+echo ""
+
+# Wait for the checker to actually accept status calls before proceeding.
+echo "=== Preflight: waiting for checker to be ready... ==="
+WAIT_DEADLINE=$(( $(date +%s) + 120 ))
+while true; do
+  if [ "$(date +%s)" -gt "$WAIT_DEADLINE" ]; then
+    echo "ERROR: checker did not become ready within 120s."
+    docker logs --tail=20 config-checker
+    exit 1
+  fi
+  echo "  polling checker..."
+  if docker exec config-checker hadoopconf status --format text >/dev/null 2>&1; then
+    break
+  fi
+  sleep 5
+done
+echo "  checker is ready."
+echo ""
+
+# ---------------------------------------------------------------------------
+# 1. Show the running stack
+# ---------------------------------------------------------------------------
+
+echo "=== 1. Running containers ==="
+docker compose ps
+
+# ---------------------------------------------------------------------------
+# 2. Full integration test suite (live cluster)
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 2. Full live integration test suite ==="
+bash tests/run-all.sh
+
+# ---------------------------------------------------------------------------
+# 3. Unit + integration tests (no live cluster needed)
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 3. Unit and integration tests ==="
+python -m pytest tests/checker/ -v --tb=short
+
+# ---------------------------------------------------------------------------
+# 4. Baseline: cluster is clean
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 4. Baseline: cluster is clean (text) ==="
+docker compose exec checker hadoopconf status --format text
+
+echo ""
+echo "=== 4b. Same baseline as JSON ==="
+docker compose exec checker hadoopconf status --format json
+
+# ---------------------------------------------------------------------------
+# 5. Inject a bug: wrong fs.defaultFS in core-site.xml
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 5. Injecting bug: fs.defaultFS -> hdfs://wronghost:8020 ==="
+sed -i 's|hdfs://namenode:8020|hdfs://wronghost:8020|' conf/core-site.xml
+echo "Mutation applied. Waiting for agents to republish (~60s heartbeat)..."
+sleep 65
+
+# ---------------------------------------------------------------------------
+# 6. Drift detected: rule failures + causality graph trace
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 6. Drift detected (text) ==="
+docker compose exec checker hadoopconf status --format text
+
+echo ""
+echo "=== 6b. Drift detected (JSON) — root_causes array shows graph trace ==="
+docker compose exec checker hadoopconf status --format json
+
+# ---------------------------------------------------------------------------
+# 7. Restore
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 7. Restoring conf/core-site.xml ==="
+sed -i 's|hdfs://wronghost:8020|hdfs://namenode:8020|' conf/core-site.xml
+docker compose restart agent-namenode
+echo "Restored. Waiting for agents to republish..."
+sleep 65
+
+echo ""
+echo "=== 7b. Confirm clean after restore ==="
+docker compose exec checker hadoopconf status --format text
+
+# ---------------------------------------------------------------------------
+# 8. Host-side status via external Kafka listener (localhost:9094)
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 8. Host-side status via localhost:9094 ==="
+hadoopconf status --bootstrap localhost:9094 --rules rules/hadoop-3.3.x.yaml --format text
+
+# ---------------------------------------------------------------------------
+# 9. Full buggy-config evaluation harness (all 5 scenarios)
+# ---------------------------------------------------------------------------
+
+echo ""
+echo "=== 9. Buggy-config evaluation harness ==="
+bash tests/evaluate.sh
+
+echo ""
+echo "=== 9b. Evaluation summary ==="
+cat tests/results/latest/summary.txt
+
+echo ""
+echo "=== Done ==="

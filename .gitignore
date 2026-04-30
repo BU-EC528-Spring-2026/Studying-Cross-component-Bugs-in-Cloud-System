@@ -3,7 +3,7 @@ out/
 debug-runtime/
 **/out/
 **/debug-runtime/
-tests/results/
+**/tests/results/
 
 # Archives
 *.zip

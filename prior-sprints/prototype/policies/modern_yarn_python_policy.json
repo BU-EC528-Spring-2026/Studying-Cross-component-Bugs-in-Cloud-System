@@ -1,0 +1,29 @@
+{
+  "name": "modern_yarn_python_cluster",
+  "required": [
+    {
+      "scope": "effective_conf",
+      "key": "spark.yarn.appMasterEnv.PYSPARK_PYTHON",
+      "equals": "/opt/venv/bin/python",
+      "severity": "warning",
+      "title": "Cluster-mode Python interpreter is not propagated to the Application Master"
+    },
+    {
+      "scope": "effective_conf",
+      "key": "spark.executorEnv.PYSPARK_PYTHON",
+      "equals": "/opt/venv/bin/python",
+      "severity": "warning",
+      "title": "Python interpreter is not propagated to executors"
+    }
+  ],
+  "equal_keys": [
+    {
+      "keys": [
+        "spark.yarn.appMasterEnv.PYSPARK_PYTHON",
+        "spark.executorEnv.PYSPARK_PYTHON"
+      ],
+      "severity": "warning",
+      "title": "AM and executor Python interpreters are inconsistent"
+    }
+  ]
+}

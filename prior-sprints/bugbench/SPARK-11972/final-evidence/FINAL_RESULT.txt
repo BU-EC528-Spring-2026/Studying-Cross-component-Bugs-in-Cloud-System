@@ -1,0 +1,9 @@
+SPARK-11972 real-version bugbench result:
+
+- Buggy lane: Spark 1.6.0
+- Fixed lane: Spark 1.6.1
+- Oracle: --hiveconf RESULT_TABLE must propagate into Spark SQL session and substitute ${hiveconf:RESULT_TABLE}
+- Result: reproduced=true
+
+Interpretation:
+The testbench successfully reproduced a real configuration-propagation bug. In Spark 1.6.0, the hiveconf variable remains unexpanded and triggers a parser failure. In Spark 1.6.1, the same SQL workload succeeds.

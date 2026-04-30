@@ -1,0 +1,35 @@
+# Derby metastore data
+prior-sprints/metastore_db/
+# Hive and Hadoop runtime logs
+*.log
+logs/
+/tmp/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Environment secrets (keep hadoop.env as it has no secrets, but ignore any local overrides)
+*.env.local
+.env
+# Boot log captures
+bootlogs.txt
+# OS
+.DS_Store
+Thumbs.db
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+.venv/
+venv/*
+venv
+
+prior-sprints/tests/results
+prior-sprints/tests/results/*
