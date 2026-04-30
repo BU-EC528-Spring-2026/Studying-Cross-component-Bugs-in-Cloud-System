@@ -10,8 +10,10 @@ ORIGINAL_CONTENT=""
 
 # With CHECKER_HEARTBEAT=10 (or watchdog firing), drift surfaces in
 # under 12s. However, Kafka consumer group coordination adds overhead.
-# 30s accounts for rejoin delays on fresh test runs.
-DRIFT_WAIT_SEC=30
+# 30s accounts for rejoin delays on fresh test runs. Bumped to 60s
+# when run after heavy tests (02-yarn-pi, 06-spark-yarn) that flood
+# the Kafka topic with heartbeats and delay checker processing.
+DRIFT_WAIT_SEC=60
 POLL_INTERVAL=1
 IDLE_WINDOW_SEC=5
 
@@ -54,8 +56,19 @@ echo "[$TEST_NAME] host and container agree on baseline: $host_val"
 ORIGINAL_CONTENT=$(cat "$YARN_XML")
 
 # ---------------------------------------------------------------------------
-# 2. Baseline
+# 2. Wait for checker to drain any backlog from prior tests, then baseline.
 # ---------------------------------------------------------------------------
+
+echo "[$TEST_NAME] waiting for checker to go quiet..."
+QUIET_DEADLINE=$(( $(date +%s) + 30 ))
+while [ "$(date +%s)" -lt "$QUIET_DEADLINE" ]; do
+  probe_ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  sleep 1
+  if [ -z "$(docker logs --since "$probe_ts" config-checker 2>&1)" ]; then
+    break
+  fi
+done
+echo "[$TEST_NAME] checker is quiet"
 
 BASELINE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 sleep 1
@@ -93,8 +106,7 @@ while [ "$(date +%s)" -lt "$DEADLINE" ]; do
   if echo "$agent_logs" | grep -q "detected change"; then
     WATCHDOG_FIRED=1
   fi
-  # Search entire checker logs for 9999 (which appears in drift reports after mutation)
-  checker_logs=$(docker logs config-checker 2>&1 || true)
+  checker_logs=$(docker logs --since "$BASELINE" config-checker 2>&1 || true)
   if echo "$checker_logs" | grep -q '"value_a": "9999"'; then
     SAW_REPUBLISH=1
     break
