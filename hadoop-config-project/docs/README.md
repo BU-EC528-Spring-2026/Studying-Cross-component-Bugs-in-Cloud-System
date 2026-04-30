@@ -23,7 +23,7 @@ package is. See [plan.md](plan.md) for the full design rationale.
 | 5 | Causality graph / root-cause tracing | Complete |
 | 6 | Synthetic-worker simulator, scale test | Not started |
 
-**Tests:** 199 tests across 11 files in `tests/checker/`. Full suite passes
+**Tests:** 279 tests across 19 files in `tests/checker/`. Full suite passes
 against the shipped config fixtures with no cluster required.
 
 ## What it does
@@ -168,7 +168,7 @@ are set in `Dockerfile.agent` and `Dockerfile.checker`.
 
 ## Rule set
 
-`rules/hadoop-3.3.x.yaml` ships with five reference rules covering the
+`rules/hadoop-3.3.x.yaml` ships with seven reference rules covering the
 rule-engine feature set:
 
 - `hdfs-replication-max` — constraint (`dfs.replication` ≤ `dfs.replication.max`).
@@ -176,11 +176,14 @@ rule-engine feature set:
 - `fs-defaultfs-propagation` — single-key agreement across a list of services.
 - `hive-warehouse-namenode` — "must contain value of" cross-key check.
 - `dual-source-consistency` — XML vs env/JVM-flag agreement per service.
+- `datanode-replication-match` — datanode and namenode must agree on `dfs.replication`.
+- `hive-metastore-uri-consistency` — `hive.metastore.uris` must match between hive-server2 and hive-metastore.
 
 The four rule forms — `constraint` with a `relation`, `propagation` with
 `services`, `propagation` with `must_contain_value_of`, and
 `dual-source-consistency` — are all the validator supports today. New rule
-forms require a new handler in `checker/analysis/validator.py`.
+forms require a new handler in `checker/analysis/validator.py`. See
+[rules.md](rules.md) for the full schema and how to add a rule.
 
 ## Adopting this on your own cluster
 
@@ -215,22 +218,74 @@ collectors are the extension point.
 
 ## Testing
 
-The repo has two test suites that test different things:
+The repo has four ways to exercise the system, each answering a different
+question. Use the right one for what you're trying to learn. Sample
+outputs from the three shell harnesses are checked in at
+`tests/results/evaluation-outputs/` for reference.
 
-- `pytest tests/checker/` — 199 unit + integration tests for the checker
-  package. Runs without any cluster, uses fixtures in
-  `tests/checker/fixtures/`. This is the primary regression suite.
-- `tests/run-all.sh` — 6 bash smoke tests that drive the live cluster (HDFS
-  round-trip, YARN MapReduce pi, Hive beeline, Kafka pub/sub, ZooKeeper
-  znodes, Spark-on-YARN). Requires the stack to be up and healthy. These
-  exist to prove the fixture cluster actually works; they don't exercise the
-  checker.
+**`pytest tests/checker/`** — 279 unit + integration tests for the checker
+package. No cluster required; fixtures live in `tests/checker/fixtures/`.
+This is the primary regression suite — it proves the Python pipeline (every
+collector, rule evaluator, graph trace) does what it claims at the API
+level. Fast (under a second), runs in CI, can't catch container / Kafka /
+deployment problems.
 
 ```bash
-pytest tests/checker/                  # all 199
+pytest tests/checker/                  # all 279
 pytest tests/checker/ -k validator     # one module
-cd tests && ./run-all.sh               # cluster smoke tests
 ```
+
+**`tests/run-all.sh`** — 10 bash smoke tests against the live Compose
+stack. Tests `01-hdfs.sh` through `06-spark-yarn.sh` exercise the fixture
+cluster itself (HDFS round-trip, YARN pi, Hive beeline, Kafka pub/sub,
+ZooKeeper znodes, Spark-on-YARN); tests `07-checker-drift.sh` through
+`10-causality-trace.sh` drive the checker end-to-end on the real stack
+(inotify-driven drift detection, multi-agent propagation, cross-service
+constraint, causality-graph trace). Requires the stack up and healthy.
+This is what catches container / agent / Kafka issues that pytest can't
+see — e.g. a broken bind mount or a Dockerfile that built without an
+entry point. Sample run: `tests/results/evaluation-outputs/run-all.sh.txt`.
+
+```bash
+cd tests && ./run-all.sh               # all 10
+bash tests/07-checker-drift.sh         # one
+```
+
+**`tests/evaluate.sh`** — the drift-scenario evaluator harness. For each
+scenario in `tests/configs/buggy/<name>/`, it confirms the clean baseline
+is clean, copies the buggy files into `conf/`, polls `hadoopconf status`
+and the consumer logs until the expected rule fires (recording timing),
+restores the clean baseline, and confirms recovery. Writes per-scenario
+artefacts (`before.json`, `detected.json`, `post-restore.json`,
+`checker-report.json`, `inject.diff`, `timing.json`) and a top-level
+`summary.{json,txt}` to `tests/results/<UTC-timestamp>/`. This is the
+closest thing to an end-to-end correctness + latency benchmark — current
+runs detect every shipped scenario in well under 3s with the harness's
+10s heartbeat. Sample run:
+`tests/results/evaluation-outputs/evaluate.sh.txt`.
+
+```bash
+cd tests && ./evaluate.sh
+```
+
+**Manual `hadoopconf status`** — for ad-hoc inspection of the live
+cluster. Spins up a transient consumer, replays the tail of the snapshot
+topic into a fresh in-memory store, runs the full pipeline, and prints
+the result. Exits 0 if clean, 1 if dirty — also suitable as a CI gate
+after a config push. Use this when something looks off and you want a
+single-shot answer without parsing logs.
+
+```bash
+hadoopconf status --rules rules/hadoop-3.3.x.yaml --format text
+```
+
+For an interactive walkthrough (clean status, inject an
+`fs.defaultFS` bug, watch the drift surface, restore, confirm clean),
+see `tests/demo.sh`. Sample run:
+`tests/results/evaluation-outputs/demo.sh.txt`.
+
+See [usage.md](usage.md) for the full set of CLI workflows
+(`status`, `validate`, `oneshot`, `collect`) and what each one is for.
 
 ## Repo layout
 
@@ -249,10 +304,12 @@ hadoop-config-project/
 │   ├── consumer.py                   Kafka consumer + full pipeline
 │   └── cli.py                        `hadoopconf` entry point
 ├── rules/
-│   └── hadoop-3.3.x.yaml             Reference rule set (5 rules)
+│   └── hadoop-3.3.x.yaml             Reference rule set (7 rules)
 ├── tests/
-│   ├── checker/                      199 pytest tests for the tool
-│   └── 0*-*.sh                       6 bash smoke tests for the cluster
+│   ├── checker/                      279 pytest tests for the tool
+│   ├── ??-*.sh                       10 bash smoke tests (cluster + checker)
+│   ├── evaluate.sh                   Drift-scenario evaluator harness
+│   └── results/<timestamp>/          Per-run evaluator artefacts
 ├── conf/                             Cluster XMLs — also the test fixture
 ├── hadoop.env                        Dual-source env file (intentionally redundant)
 ├── Dockerfile.agent                  Agent sidecar image

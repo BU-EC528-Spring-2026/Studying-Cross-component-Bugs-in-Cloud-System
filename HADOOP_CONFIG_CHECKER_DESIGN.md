@@ -1,8 +1,8 @@
 # Hadoop Configuration Checker: Design Document
 
 **Project:** EC528 — Studying Cross-component Bugs in Cloud Systems  
-**Implementation base:** `HudsonReynolds2/hadoop-config-project`  
-**Related course repository:** `BU-EC528-Spring-2026/Studying-Cross-component-Bugs-in-Cloud-System`  
+**Implementation base:** `hadoop-config-project/`  
+**Related course files:** `prior-sprints/`  
 **Document purpose:** consolidate the design of the Hadoop configuration checker, connect it to the evaluation results, and clarify how the checker relates to the real-version bugbenches.
 
 ---
@@ -85,7 +85,7 @@ Text / JSON status, drift reports, root-cause traces
 
 Each monitored service has an agent sidecar. The agent reads configuration sources mounted from the corresponding service. The checker container consumes all published snapshots from Kafka and analyzes the global configuration state.
 
-This decouples collection from analysis. Agents do not need to know the full rule set, and the checker does not directly poll Hadoop HTTP endpoints. The checker reasons over snapshots.
+This decouples collection from analysis. Agents do not need to know the full rule set, and the checker does not directly poll Hadoop HTTP endpoints. The checker reasons over snapshots. This design enables users of this tool to easily connect to existing systems without messing with too much. Detailed more in our other docs. 
 
 ---
 
@@ -487,13 +487,11 @@ A future integration path would convert bugbench runtime evidence into snapshot-
 
 ### 13.2 Recommended Cleanup
 
-- Update README test counts if it still states 199 tests or only six smoke tests; current evidence shows 279 pytest tests and ten live tests.
-- Ensure `.env` contains only one `CHECKER_HEARTBEAT` line to avoid arithmetic errors in `evaluate.sh`.
 - Do not commit runtime outputs such as Docker volumes, `out/`, `debug-runtime/`, or large logs.
-- Keep `tests/results/latest` out of the repository unless intentionally preserving evaluation artifacts.
-- Add or update a design document under `docs/DESIGN.md` using this document as the base.
-- Add a short `docs/EVALUATION.md` that distinguishes `pytest`, `run-all.sh`, `evaluate.sh`, and manual `hadoopconf status`.
+- Add a short section to README.md that distinguishes `pytest`, `run-all.sh`, `evaluate.sh`, and manual `hadoopconf status`.
 - Clarify that SPARK-11972 is a successful real-version reproduction, while SPARK-15067 is a launch-evidence capture case with `reproduced=false` under Java 8.
+
+Check out `hadoop-config-project/docs/Troubleshooting.md`, and `hadoop-config-project/docs/operations.md` `hadoop-config-project/docs/README.md`for more specifics.
 
 ---
 
@@ -502,8 +500,9 @@ A future integration path would convert bugbench runtime evidence into snapshot-
 - The checker focuses on configuration consistency, drift, and propagation failures; it is not a complete detector for all cloud-system bugs.
 - Rules must be written explicitly; the system does not infer all invariants automatically.
 - The checker currently reasons mainly over static and near-runtime configuration snapshots, not arbitrary application semantics.
-- The bugbench layer is currently not fully integrated into the checker’s Kafka-based pipeline.
+- The `prior-sprints/bugbench` layer is currently not fully integrated into the checker’s Kafka-based pipeline.
 - Each real bugbench still requires a custom workload and assertion oracle.
+Check out `hadoop-config-project/docs/limitations.md` for more specifics.
 
 ---
 
@@ -535,9 +534,13 @@ Together, these pieces support the project’s central claim:
 
 ## Referenced Project Documents
 
-- `HudsonReynolds2/hadoop-config-project` README and source files.
-- `Evaluation Results.docx` provided by the project team.
-- `voiceover.txt` provided by the project team.
-- `Sprint 4.pptx` provided by the project team.
-- `tests/evaluate.sh` evaluation harness.
-- EC528 course repository bugbench results for SPARK-11972 and SPARK-15067.
+- `hadoop-config-project/docs/` README and source files.
+- EC528 course repository `prior-sprints/bugbench` results for SPARK-11972 and SPARK-15067.
+
+### Demo 4 / Final Presentation
+Presentation link: https://docs.google.com/presentation/d/1W6wULk-O3dGci1o7o2J6U7NHNvLoHD3I/edit?usp=sharing&ouid=109798651450595509755&rtpof=true&sd=true 
+
+Video link: [https://drive.google.com/file/d/1p458j01n4CJSY2cS5iOQAqSCiNA0KwUs/view?usp=sharing ](https://drive.google.com/drive/folders/10KVrNnQoZXxPfEyXpjwFBrZP13LFwQX3?usp=drive_link)
+
+Output from evaluation tests: `hadoop-config-project/tests/results/evaluation-outputs`
+

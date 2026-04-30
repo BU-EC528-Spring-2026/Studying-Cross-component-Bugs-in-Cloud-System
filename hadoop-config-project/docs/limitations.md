@@ -135,4 +135,4 @@ If the next team picks this up, recommended order:
    upgrade — turn the causality graph from hand-coded to learned.
 
 The first three are low-risk and add immediate value. Items 4-6 are
-larger projects. Item 7 is a research contribution worth its own paper.
+larger projects. Item 7 is a larger item.

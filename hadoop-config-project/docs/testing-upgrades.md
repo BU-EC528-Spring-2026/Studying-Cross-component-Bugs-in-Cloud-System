@@ -6,7 +6,7 @@ API agrees with itself. Companion document to [plan.md](plan.md).
 
 ## Premise
 
-199 tests pass today. They cover every collector, rule evaluator, and graph
+279 tests pass today. They cover every collector, rule evaluator, and graph
 edge at the function level, and [tests/checker/test_integration.py](tests/checker/test_integration.py)
 exercises the pipeline end-to-end against mutated fixture files. That
 proves the Python API detects mutations it's asked to detect. It does not

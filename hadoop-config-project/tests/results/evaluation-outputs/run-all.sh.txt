@@ -1,0 +1,90 @@
+================================================================
+ hadoop-stack functionality tests
+================================================================
+Waiting for namenode to exit safe mode...
+Namenode ready.
+
+
+---- running 01-hdfs.sh ----
+[01-hdfs] PASS: 1MB round-trip byte-identical
+
+---- running 02-yarn-pi.sh ----
+[02-yarn-pi] submitting pi job (2 maps, 100 samples)
+[02-yarn-pi] PASS: Estimated value of Pi is 3.12000000000000000000
+
+---- running 03-hive.sh ----
+[03-hive] running table lifecycle via beeline
+[03-hive] PASS: table created, 3 rows inserted+counted, dropped
+
+---- running 04-kafka.sh ----
+[04-kafka] creating topic cfgcheck-smoke-66431
+[04-kafka] producing 10 messages
+[04-kafka] consuming (timeout 10s)
+[04-kafka] PASS: produced 10, consumed 10
+
+---- running 05-zookeeper.sh ----
+[05-zookeeper] PASS: znode created, read back 'hello-zk', deleted
+
+---- running 06-spark-yarn.sh ----
+[06-spark-yarn] submitting SparkPi via --master yarn (this takes ~60s)
+[06-spark-yarn] PASS:                                                                                 Pi is roughly 3.142253428450686
+
+---- running 07-checker-drift.sh ----
+[07-checker-drift] sidecars are up
+[07-checker-drift] host and container agree on baseline: 2048
+[07-checker-drift] waiting for checker to go quiet...
+[07-checker-drift] checker is quiet
+[07-checker-drift] baseline timestamp: 2026-04-30T03:19:49Z
+[07-checker-drift] mutation visible in container: 9999
+[07-checker-drift] watchdog fired — drift detected quickly
+[07-checker-drift] checker reported drift including new value 9999
+[07-checker-drift] restoring /home/hudsonre/EC528/Studying-Cross-component-Bugs-in-Cloud-System/hadoop-config-project/conf/yarn-site.xml in place
+[07-checker-drift] restored value visible in container: 2048
+[07-checker-drift] agent republished; checker may be silent (value matches last-seen)
+[07-checker-drift] restore observed by pipeline
+[07-checker-drift] idle window produced no spurious drift
+[07-checker-drift] PASS
+
+---- running 08-multi-agent-propagation.sh ----
+[08-multi-agent-propagation] all expected agents are up: config-agent config-agent-datanode config-agent-resourcemanager config-agent-nodemanager config-agent-spark-client
+[08-multi-agent-propagation] host and all agents agree on baseline: hdfs://namenode:8020
+[08-multi-agent-propagation] baseline timestamp: 2026-04-30T03:20:59Z
+[08-multi-agent-propagation] mutation visible in all agents: hdfs://drifted-namenode:8020
+[08-multi-agent-propagation] checker reported drift containing the new fs.defaultFS
+[08-multi-agent-propagation] drift output names 4 services
+[08-multi-agent-propagation] restoring /home/hudsonre/EC528/Studying-Cross-component-Bugs-in-Cloud-System/hadoop-config-project/conf/core-site.xml in place
+[08-multi-agent-propagation] restored value visible: hdfs://namenode:8020
+[08-multi-agent-propagation] restore observed by pipeline
+[08-multi-agent-propagation] PASS
+
+---- running 09-cross-service-constraint.sh ----
+[09-cross-service-constraint] NM memory ceiling: 4096 MB
+[09-cross-service-constraint] will set scheduler max to 16385 MB (must violate ceiling)
+[09-cross-service-constraint] mutation visible in RM agent: 16385
+[09-cross-service-constraint] yarn-scheduler-ceiling fired with new value 16385 at critical severity
+[09-cross-service-constraint] restoring /home/hudsonre/EC528/Studying-Cross-component-Bugs-in-Cloud-System/hadoop-config-project/conf/yarn-site.xml in place
+[09-cross-service-constraint] restored value visible: 2048
+[09-cross-service-constraint] restore observed by pipeline
+[09-cross-service-constraint] PASS
+
+---- running 10-causality-trace.sh ----
+[10-causality-trace] root_causes lists 9 downstream effect(s) for fs.defaultFS
+[10-causality-trace] downstream services in trace: hive-metastore,hive-server2,spark-client
+[10-causality-trace] restoring /home/hudsonre/EC528/Studying-Cross-component-Bugs-in-Cloud-System/hadoop-config-project/conf/core-site.xml in place
+[10-causality-trace] PASS
+
+================================================================
+ summary
+================================================================
+passed: 10
+  + 01-hdfs.sh
+  + 02-yarn-pi.sh
+  + 03-hive.sh
+  + 04-kafka.sh
+  + 05-zookeeper.sh
+  + 06-spark-yarn.sh
+  + 07-checker-drift.sh
+  + 08-multi-agent-propagation.sh
+  + 09-cross-service-constraint.sh
+  + 10-causality-trace.sh
+failed: 0

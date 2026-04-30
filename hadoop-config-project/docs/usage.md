@@ -324,16 +324,16 @@ The harness:
    - `scenario.txt`, `timing.json`
 4. Updates `tests/results/latest` symlink.
 
-Real output from `2026-04-29T03-20-04Z`:
+Real output from `2026-04-30T03-15-34Z`:
 
 ```
 scenario                         status severity  status_ms    log_ms
 ----------------------------------------------------------------------
-dual-source-disagreement         PASS   warning   34826        34923
-hive-warehouse-wrong-namenode    PASS   warning   5377         5474
-replication-exceeds-max          PASS   critical  5420         5528
-scheduler-ceiling-violation      PASS   critical  5424         5522
-spark-fs-mismatch                PASS   critical  5458         5560
+dual-source-disagreement         PASS   warning   2836         2951
+hive-warehouse-wrong-namenode    PASS   warning   990          1080
+replication-exceeds-max          PASS   critical  423          513
+scheduler-ceiling-violation      PASS   critical  416          509
+spark-fs-mismatch                PASS   critical  457          552
 ----------------------------------------------------------------------
 passed: 5   failed: 0   total: 5
 heartbeat: 10s
@@ -342,17 +342,19 @@ heartbeat: 10s
 A few notes on the latencies:
 
 - `heartbeat: 10s` — `evaluate.sh` overrides `CHECKER_HEARTBEAT` to 10s for
-  the run. Production default is 60s. Detection latency is approximately
-  one heartbeat past the inotify event (~5s).
-- The first scenario is consistently slower than the rest. Above, it's
-  ~35s; in earlier runs (`2026-04-29T01-53-59Z`) it was ~10s. The variance
-  is consumer cold-start: until the consumer first polls a complete cycle
-  through the topic, the harness's `status` calls don't see the new
-  snapshots. After the first scenario, the topic is "warm" and detection
-  hits 5s steadily. This is documented and expected, not a bug.
+  the run. Production default is 60s. Steady-state detection lands well
+  under one heartbeat — the inotify path catches every scenario above
+  inside 600ms once the topic is warm.
+- The first two scenarios (`dual-source-disagreement` at ~2.8s and
+  `hive-warehouse-wrong-namenode` at ~1.0s) sit above the steady-state
+  ~450ms because the consumer's poll loop hasn't yet circled the full
+  topic when the harness's first `status` calls go out. Once the topic is
+  "warm" detection holds steady at ~400-500ms regardless of severity.
 - `severity: warning` for `dual-source-disagreement` is correct — the
   `dual-source-consistency` rule is `severity: warning`. The other
   scenarios trigger `critical` rules.
+- A captured copy of this output is checked in at
+  `tests/results/evaluation-outputs/evaluate.sh.txt`.
 
 ## Cluster smoke tests
 
@@ -364,7 +366,8 @@ bash tests/run-all.sh
 ```
 
 Each test is a standalone shell script. See [testing.md](testing.md) for
-what each one verifies and how to add one.
+what each one verifies and how to add one. A captured run is at
+`tests/results/evaluation-outputs/run-all.sh.txt`.
 
 ## Tearing down
 

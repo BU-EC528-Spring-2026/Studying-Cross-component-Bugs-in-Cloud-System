@@ -1,0 +1,331 @@
+
+=== Preflight: waiting for checker to receive snapshots ===
+  checker is receiving snapshots.
+
+=== 1. Running containers ===
+NAME                           SERVICE                 STATUS
+config-agent                   agent-namenode          Up 2 hours
+config-agent-datanode          agent-datanode          Up 2 hours
+config-agent-hive-metastore    agent-hive-metastore    Up 2 hours
+config-agent-hive-server2      agent-hive-server2      Up 2 hours
+config-agent-kafka             agent-kafka             Up 2 hours
+config-agent-nodemanager       agent-nodemanager       Up 2 hours
+config-agent-resourcemanager   agent-resourcemanager   Up 2 hours
+config-agent-spark-client      agent-spark-client      Up 2 hours
+config-agent-zookeeper         agent-zookeeper         Up 2 hours
+config-checker                 checker                 Up About an hour
+datanode                       datanode                Up About a minute (healthy)
+hive-metastore                 hive-metastore          Up 2 hours (healthy)
+hive-server2                   hive-server2            Up 2 hours (healthy)
+kafka                          kafka                   Up 2 hours (healthy)
+namenode                       namenode                Up About a minute (healthy)
+nodemanager                    nodemanager             Up 2 hours (healthy)
+postgres-metastore             postgres-metastore      Up 2 hours (healthy)
+resourcemanager                resourcemanager         Up 2 hours (healthy)
+spark-client                   spark-client            Up 2 hours
+spark-master                   spark-master            Up 2 hours (healthy)
+spark-worker                   spark-worker            Up 2 hours (healthy)
+zookeeper                      zookeeper               Up 2 hours (healthy)
+
+=== 2. Current cluster status (text) ===
+Snapshots received: 450
+Agents: 33 (datanode-core-site, datanode-hadoop, datanode-hdfs-site, datanode-hive-site, datanode-mapred-site, datanode-yarn-site, hive-metastore-SERVICE_OPTS, hive-server2-SERVICE_OPTS, kafka-broker.config, namenode-core-site, namenode-hadoop, namenode-hdfs-site, namenode-hive-site, namenode-mapred-site, namenode-yarn-site, nodemanager-core-site, nodemanager-hadoop, nodemanager-hdfs-site, nodemanager-hive-site, nodemanager-mapred-site, nodemanager-yarn-site, resourcemanager-core-site, resourcemanager-hadoop, resourcemanager-hdfs-site, resourcemanager-hive-site, resourcemanager-mapred-site, resourcemanager-yarn-site, spark-client-core-site, spark-client-hdfs-site, spark-client-hive-site, spark-client-mapred-site, spark-client-yarn-site, zookeeper-zoo.cfg)
+Services: 9 (datanode, hive-metastore, hive-server2, kafka, namenode, nodemanager, resourcemanager, spark-client, zookeeper)
+
+Rules: 7 passed, 0 failed, 0 skipped
+
+CLEAN.
+
+=== 2b. Same status as JSON ===
+{
+  "agents": [
+    "datanode-core-site",
+    "datanode-hadoop",
+    "datanode-hdfs-site",
+    "datanode-hive-site",
+    "datanode-mapred-site",
+    "datanode-yarn-site",
+    "hive-metastore-SERVICE_OPTS",
+    "hive-server2-SERVICE_OPTS",
+    "kafka-broker.config",
+    "namenode-core-site",
+    "namenode-hadoop",
+    "namenode-hdfs-site",
+    "namenode-hive-site",
+    "namenode-mapred-site",
+    "namenode-yarn-site",
+    "nodemanager-core-site",
+    "nodemanager-hadoop",
+    "nodemanager-hdfs-site",
+    "nodemanager-hive-site",
+    "nodemanager-mapred-site",
+    "nodemanager-yarn-site",
+    "resourcemanager-core-site",
+    "resourcemanager-hadoop",
+    "resourcemanager-hdfs-site",
+    "resourcemanager-hive-site",
+    "resourcemanager-mapred-site",
+    "resourcemanager-yarn-site",
+    "spark-client-core-site",
+    "spark-client-hdfs-site",
+    "spark-client-hive-site",
+    "spark-client-mapred-site",
+    "spark-client-yarn-site",
+    "zookeeper-zoo.cfg"
+  ],
+  "clean": true,
+  "drifts": [],
+  "root_causes": [],
+  "rules": {
+    "failed": [],
+    "passed": [
+      "hdfs-replication-max",
+      "yarn-scheduler-ceiling",
+      "fs-defaultfs-propagation",
+      "hive-warehouse-namenode",
+      "dual-source-consistency",
+      "datanode-replication-match",
+      "hive-metastore-uri-consistency"
+    ],
+    "skipped": []
+  },
+  "services": [
+    "datanode",
+    "hive-metastore",
+    "hive-server2",
+    "kafka",
+    "namenode",
+    "nodemanager",
+    "resourcemanager",
+    "spark-client",
+    "zookeeper"
+  ],
+  "snapshots_received": 450
+}
+
+=== 3. Injecting bug: fs.defaultFS -> hdfs://wronghost:8020 ===
+<property><name>fs.defaultFS</name><value>hdfs://wronghost:8020</value></property>
+  waiting for drift to propagate (max 45s)...
+  WARN: fs.defaultFS drift not observed within 45s.
+
+=== 3b. Drift detected (text) ===
+Snapshots received: 450
+Agents: 33 (datanode-core-site, datanode-hadoop, datanode-hdfs-site, datanode-hive-site, datanode-mapred-site, datanode-yarn-site, hive-metastore-SERVICE_OPTS, hive-server2-SERVICE_OPTS, kafka-broker.config, namenode-core-site, namenode-hadoop, namenode-hdfs-site, namenode-hive-site, namenode-mapred-site, namenode-yarn-site, nodemanager-core-site, nodemanager-hadoop, nodemanager-hdfs-site, nodemanager-hive-site, nodemanager-mapred-site, nodemanager-yarn-site, resourcemanager-core-site, resourcemanager-hadoop, resourcemanager-hdfs-site, resourcemanager-hive-site, resourcemanager-mapred-site, resourcemanager-yarn-site, spark-client-core-site, spark-client-hdfs-site, spark-client-hive-site, spark-client-mapred-site, spark-client-yarn-site, zookeeper-zoo.cfg)
+Services: 9 (datanode, hive-metastore, hive-server2, kafka, namenode, nodemanager, resourcemanager, spark-client, zookeeper)
+
+Rules: 7 passed, 0 failed, 0 skipped
+
+CLEAN.
+
+=== 3c. Drift detected (JSON, root_causes shows graph trace) ===
+{
+  "agents": [
+    "datanode-core-site",
+    "datanode-hadoop",
+    "datanode-hdfs-site",
+    "datanode-hive-site",
+    "datanode-mapred-site",
+    "datanode-yarn-site",
+    "hive-metastore-SERVICE_OPTS",
+    "hive-server2-SERVICE_OPTS",
+    "kafka-broker.config",
+    "namenode-core-site",
+    "namenode-hadoop",
+    "namenode-hdfs-site",
+    "namenode-hive-site",
+    "namenode-mapred-site",
+    "namenode-yarn-site",
+    "nodemanager-core-site",
+    "nodemanager-hadoop",
+    "nodemanager-hdfs-site",
+    "nodemanager-hive-site",
+    "nodemanager-mapred-site",
+    "nodemanager-yarn-site",
+    "resourcemanager-core-site",
+    "resourcemanager-hadoop",
+    "resourcemanager-hdfs-site",
+    "resourcemanager-hive-site",
+    "resourcemanager-mapred-site",
+    "resourcemanager-yarn-site",
+    "spark-client-core-site",
+    "spark-client-hdfs-site",
+    "spark-client-hive-site",
+    "spark-client-mapred-site",
+    "spark-client-yarn-site",
+    "zookeeper-zoo.cfg"
+  ],
+  "clean": true,
+  "drifts": [],
+  "root_causes": [],
+  "rules": {
+    "failed": [],
+    "passed": [
+      "hdfs-replication-max",
+      "yarn-scheduler-ceiling",
+      "fs-defaultfs-propagation",
+      "hive-warehouse-namenode",
+      "dual-source-consistency",
+      "datanode-replication-match",
+      "hive-metastore-uri-consistency"
+    ],
+    "skipped": []
+  },
+  "services": [
+    "datanode",
+    "hive-metastore",
+    "hive-server2",
+    "kafka",
+    "namenode",
+    "nodemanager",
+    "resourcemanager",
+    "spark-client",
+    "zookeeper"
+  ],
+  "snapshots_received": 450
+}
+
+=== 4. Restoring conf/core-site.xml ===
+  waiting for cluster to return to clean (max 45s)...
+  clean observed.
+
+=== 4b. Confirm clean after restore ===
+Snapshots received: 450
+Agents: 33 (datanode-core-site, datanode-hadoop, datanode-hdfs-site, datanode-hive-site, datanode-mapred-site, datanode-yarn-site, hive-metastore-SERVICE_OPTS, hive-server2-SERVICE_OPTS, kafka-broker.config, namenode-core-site, namenode-hadoop, namenode-hdfs-site, namenode-hive-site, namenode-mapred-site, namenode-yarn-site, nodemanager-core-site, nodemanager-hadoop, nodemanager-hdfs-site, nodemanager-hive-site, nodemanager-mapred-site, nodemanager-yarn-site, resourcemanager-core-site, resourcemanager-hadoop, resourcemanager-hdfs-site, resourcemanager-hive-site, resourcemanager-mapred-site, resourcemanager-yarn-site, spark-client-core-site, spark-client-hdfs-site, spark-client-hive-site, spark-client-mapred-site, spark-client-yarn-site, zookeeper-zoo.cfg)
+Services: 9 (datanode, hive-metastore, hive-server2, kafka, namenode, nodemanager, resourcemanager, spark-client, zookeeper)
+
+Rules: 7 passed, 0 failed, 0 skipped
+
+CLEAN.
+
+=== 5. Cross-service bug: Hive warehouse points at wrong namenode ===
+    <n>hive.metastore.warehouse.dir</n>
+    <value>hdfs://wronghost:8020/user/hive/warehouse</value>
+  waiting for drift to propagate (max 45s)...
+  WARN: hive warehouse drift not observed within 45s.
+
+=== 5b. Cross-service drift detected (text) ===
+Snapshots received: 450
+Agents: 33 (datanode-core-site, datanode-hadoop, datanode-hdfs-site, datanode-hive-site, datanode-mapred-site, datanode-yarn-site, hive-metastore-SERVICE_OPTS, hive-server2-SERVICE_OPTS, kafka-broker.config, namenode-core-site, namenode-hadoop, namenode-hdfs-site, namenode-hive-site, namenode-mapred-site, namenode-yarn-site, nodemanager-core-site, nodemanager-hadoop, nodemanager-hdfs-site, nodemanager-hive-site, nodemanager-mapred-site, nodemanager-yarn-site, resourcemanager-core-site, resourcemanager-hadoop, resourcemanager-hdfs-site, resourcemanager-hive-site, resourcemanager-mapred-site, resourcemanager-yarn-site, spark-client-core-site, spark-client-hdfs-site, spark-client-hive-site, spark-client-mapred-site, spark-client-yarn-site, zookeeper-zoo.cfg)
+Services: 9 (datanode, hive-metastore, hive-server2, kafka, namenode, nodemanager, resourcemanager, spark-client, zookeeper)
+
+Rules: 7 passed, 0 failed, 0 skipped
+
+CLEAN.
+
+=== 5c. Cross-service drift (JSON) ===
+{
+  "agents": [
+    "datanode-core-site",
+    "datanode-hadoop",
+    "datanode-hdfs-site",
+    "datanode-hive-site",
+    "datanode-mapred-site",
+    "datanode-yarn-site",
+    "hive-metastore-SERVICE_OPTS",
+    "hive-server2-SERVICE_OPTS",
+    "kafka-broker.config",
+    "namenode-core-site",
+    "namenode-hadoop",
+    "namenode-hdfs-site",
+    "namenode-hive-site",
+    "namenode-mapred-site",
+    "namenode-yarn-site",
+    "nodemanager-core-site",
+    "nodemanager-hadoop",
+    "nodemanager-hdfs-site",
+    "nodemanager-hive-site",
+    "nodemanager-mapred-site",
+    "nodemanager-yarn-site",
+    "resourcemanager-core-site",
+    "resourcemanager-hadoop",
+    "resourcemanager-hdfs-site",
+    "resourcemanager-hive-site",
+    "resourcemanager-mapred-site",
+    "resourcemanager-yarn-site",
+    "spark-client-core-site",
+    "spark-client-hdfs-site",
+    "spark-client-hive-site",
+    "spark-client-mapred-site",
+    "spark-client-yarn-site",
+    "zookeeper-zoo.cfg"
+  ],
+  "clean": true,
+  "drifts": [],
+  "root_causes": [],
+  "rules": {
+    "failed": [],
+    "passed": [
+      "hdfs-replication-max",
+      "yarn-scheduler-ceiling",
+      "fs-defaultfs-propagation",
+      "hive-warehouse-namenode",
+      "dual-source-consistency",
+      "datanode-replication-match",
+      "hive-metastore-uri-consistency"
+    ],
+    "skipped": []
+  },
+  "services": [
+    "datanode",
+    "hive-metastore",
+    "hive-server2",
+    "kafka",
+    "namenode",
+    "nodemanager",
+    "resourcemanager",
+    "spark-client",
+    "zookeeper"
+  ],
+  "snapshots_received": 450
+}
+
+=== 5d. Restoring conf/hive-site.xml ===
+  waiting for cluster to return to clean (max 45s)...
+  clean observed.
+
+=== 5e. Confirm clean ===
+Snapshots received: 450
+Agents: 33 (datanode-core-site, datanode-hadoop, datanode-hdfs-site, datanode-hive-site, datanode-mapred-site, datanode-yarn-site, hive-metastore-SERVICE_OPTS, hive-server2-SERVICE_OPTS, kafka-broker.config, namenode-core-site, namenode-hadoop, namenode-hdfs-site, namenode-hive-site, namenode-mapred-site, namenode-yarn-site, nodemanager-core-site, nodemanager-hadoop, nodemanager-hdfs-site, nodemanager-hive-site, nodemanager-mapred-site, nodemanager-yarn-site, resourcemanager-core-site, resourcemanager-hadoop, resourcemanager-hdfs-site, resourcemanager-hive-site, resourcemanager-mapred-site, resourcemanager-yarn-site, spark-client-core-site, spark-client-hdfs-site, spark-client-hive-site, spark-client-mapred-site, spark-client-yarn-site, zookeeper-zoo.cfg)
+Services: 9 (datanode, hive-metastore, hive-server2, kafka, namenode, nodemanager, resourcemanager, spark-client, zookeeper)
+
+Rules: 7 passed, 0 failed, 0 skipped
+
+CLEAN.
+
+=== 6. Local validate against clean conf ===
+Passed (7):
+  [PASS] hdfs-replication-max: dfs.replication=1 <= dfs.replication.max=512: OK
+  [PASS] yarn-scheduler-ceiling: yarn.scheduler.maximum-allocation-mb=2048 <= yarn.nodemanager.resource.memory-mb=4096: OK
+  [PASS] fs-defaultfs-propagation: 'fs.defaultFS' agrees across ['namenode', 'resourcemanager', 'nodemanager', 'hive-server2', 'spark-client', 'datanode', 'hive-metastore']: 'hdfs://namenode:8020' (only [] strictly publishing, others via fallback)
+  [PASS] hive-warehouse-namenode: hive.metastore.warehouse.dir='hdfs://namenode:8020/user/hive/warehouse' matches fs.defaultFS='hdfs://namenode:8020': OK
+  [PASS] dual-source-consistency: all cross-source keys agree
+  [PASS] datanode-replication-match: 'dfs.replication' agrees across ['namenode', 'datanode']: '1' (only [] strictly publishing, others via fallback)
+  [PASS] hive-metastore-uri-consistency: 'hive.metastore.uris' agrees across ['hive-server2', 'hive-metastore']: 'thrift://hive-metastore:9083' (only [] strictly publishing, others via fallback)
+
+All rules passed.
+
+=== 6b. Local validate against buggy conf (should fail) ===
+Passed (6):
+  [PASS] yarn-scheduler-ceiling: key 'yarn.scheduler.maximum-allocation-mb' not found in store, rule skipped
+  [PASS] fs-defaultfs-propagation: 'fs.defaultFS' found in 0 of 7 services ([]), nothing to compare
+  [PASS] hive-warehouse-namenode: key 'hive.metastore.warehouse.dir' not found, rule skipped
+  [PASS] dual-source-consistency: all cross-source keys agree
+  [PASS] datanode-replication-match: 'dfs.replication' agrees across ['namenode', 'datanode']: '5' (only [] strictly publishing, others via fallback)
+  [PASS] hive-metastore-uri-consistency: 'hive.metastore.uris' found in 0 of 2 services ([]), nothing to compare
+
+Failed (1):
+  [CRITICAL] hdfs-replication-max: dfs.replication=5 <= dfs.replication.max=3: FAILED
+
+1 rule(s) failed.
+(exit code: 1)
+
+=== 7. Host-side status via localhost:9094 ===
+Snapshots received: 450
+Agents: 33 (datanode-core-site, datanode-hadoop, datanode-hdfs-site, datanode-hive-site, datanode-mapred-site, datanode-yarn-site, hive-metastore-SERVICE_OPTS, hive-server2-SERVICE_OPTS, kafka-broker.config, namenode-core-site, namenode-hadoop, namenode-hdfs-site, namenode-hive-site, namenode-mapred-site, namenode-yarn-site, nodemanager-core-site, nodemanager-hadoop, nodemanager-hdfs-site, nodemanager-hive-site, nodemanager-mapred-site, nodemanager-yarn-site, resourcemanager-core-site, resourcemanager-hadoop, resourcemanager-hdfs-site, resourcemanager-hive-site, resourcemanager-mapred-site, resourcemanager-yarn-site, spark-client-core-site, spark-client-hdfs-site, spark-client-hive-site, spark-client-mapred-site, spark-client-yarn-site, zookeeper-zoo.cfg)
+Services: 9 (datanode, hive-metastore, hive-server2, kafka, namenode, nodemanager, resourcemanager, spark-client, zookeeper)
+
+Rules: 7 passed, 0 failed, 0 skipped
+
+CLEAN.
+
+=== Done ===
