@@ -3,49 +3,49 @@
 [evaluate] 
 [evaluate] === scenario: dual-source-disagreement ===
 [evaluate] expected: rule=dual-source-consistency severity=warning downstream=
-[evaluate] status caught dual-source-consistency in 10917 ms
-[evaluate] checker logs reported dual-source-consistency in 11021 ms
+[evaluate] status caught dual-source-consistency in 2843 ms
+[evaluate] checker logs reported dual-source-consistency in 2983 ms
 [evaluate] restoring clean baseline
-[evaluate] status clean again in 462 ms
+[evaluate] status clean again in 443 ms
 [evaluate] 
 [evaluate] === scenario: hive-warehouse-wrong-namenode ===
 [evaluate] expected: rule=hive-warehouse-namenode severity=warning downstream=
-[evaluate] status caught hive-warehouse-namenode in 443 ms
-[evaluate] checker logs reported hive-warehouse-namenode in 544 ms
+[evaluate] status caught hive-warehouse-namenode in 422 ms
+[evaluate] checker logs reported hive-warehouse-namenode in 553 ms
 [evaluate] restoring clean baseline
-[evaluate] status clean again in 538 ms
+[evaluate] status clean again in 435 ms
 [evaluate] 
 [evaluate] === scenario: replication-exceeds-max ===
 [evaluate] expected: rule=hdfs-replication-max severity=critical downstream=
-[evaluate] status caught hdfs-replication-max in 423 ms
-[evaluate] checker logs reported hdfs-replication-max in 536 ms
+[evaluate] status caught hdfs-replication-max in 455 ms
+[evaluate] checker logs reported hdfs-replication-max in 583 ms
 [evaluate] restoring clean baseline
-[evaluate] status clean again in 472 ms
+[evaluate] status clean again in 432 ms
 [evaluate] 
 [evaluate] === scenario: scheduler-ceiling-violation ===
 [evaluate] expected: rule=yarn-scheduler-ceiling severity=critical downstream=
-[evaluate] status caught yarn-scheduler-ceiling in 432 ms
-[evaluate] checker logs reported yarn-scheduler-ceiling in 540 ms
+[evaluate] status caught yarn-scheduler-ceiling in 419 ms
+[evaluate] checker logs reported yarn-scheduler-ceiling in 553 ms
 [evaluate] restoring clean baseline
-[evaluate] status clean again in 469 ms
+[evaluate] status clean again in 2861 ms
 [evaluate] 
 [evaluate] === scenario: spark-fs-mismatch ===
 [evaluate] expected: rule=fs-defaultfs-propagation severity=critical downstream=
-[evaluate] status caught fs-defaultfs-propagation in 438 ms
-[evaluate] checker logs reported fs-defaultfs-propagation in 552 ms
+[evaluate] status caught fs-defaultfs-propagation in 409 ms
+[evaluate] checker logs reported fs-defaultfs-propagation in 540 ms
 [evaluate] restoring clean baseline
-[evaluate] status clean again in 452 ms
-evaluation summary — 2026-04-30T03-43-16Z
+[evaluate] status clean again in 415 ms
+evaluation summary — 2026-04-30T03-57-26Z
 ----------------------------------------------------------------------
 scenario                         status severity  status_ms    log_ms      
 ----------------------------------------------------------------------
-dual-source-disagreement         PASS   warning   10917        11021       
-hive-warehouse-wrong-namenode    PASS   warning   443          544         
-replication-exceeds-max          PASS   critical  423          536         
-scheduler-ceiling-violation      PASS   critical  432          540         
-spark-fs-mismatch                PASS   critical  438          552         
+dual-source-disagreement         PASS   warning   2843         2983        
+hive-warehouse-wrong-namenode    PASS   warning   422          553         
+replication-exceeds-max          PASS   critical  455          583         
+scheduler-ceiling-violation      PASS   critical  419          553         
+spark-fs-mismatch                PASS   critical  409          540         
 ----------------------------------------------------------------------
 passed: 5   failed: 0   total: 5
 heartbeat: 10s
-[evaluate] results: /home/hudsonre/EC528/Studying-Cross-component-Bugs-in-Cloud-System/hadoop-config-project/tests/results/2026-04-30T03-43-16Z (and tests/results/latest -> 2026-04-30T03-43-16Z)
+[evaluate] results: /home/hudsonre/EC528/Studying-Cross-component-Bugs-in-Cloud-System/hadoop-config-project/tests/results/2026-04-30T03-57-26Z (and tests/results/latest -> 2026-04-30T03-57-26Z)
 [evaluate] cleanup: restoring clean conf/ from snapshot

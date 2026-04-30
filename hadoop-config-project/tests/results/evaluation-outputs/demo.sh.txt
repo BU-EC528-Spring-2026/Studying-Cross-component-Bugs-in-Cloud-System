@@ -13,12 +13,12 @@ config-agent-nodemanager       agent-nodemanager       Up 2 hours
 config-agent-resourcemanager   agent-resourcemanager   Up 2 hours
 config-agent-spark-client      agent-spark-client      Up 2 hours
 config-agent-zookeeper         agent-zookeeper         Up 2 hours
-config-checker                 checker                 Up About an hour
-datanode                       datanode                Up About a minute (healthy)
+config-checker                 checker                 Up 2 hours
+datanode                       datanode                Up 3 minutes (healthy)
 hive-metastore                 hive-metastore          Up 2 hours (healthy)
 hive-server2                   hive-server2            Up 2 hours (healthy)
 kafka                          kafka                   Up 2 hours (healthy)
-namenode                       namenode                Up About a minute (healthy)
+namenode                       namenode                Up 3 minutes (healthy)
 nodemanager                    nodemanager             Up 2 hours (healthy)
 postgres-metastore             postgres-metastore      Up 2 hours (healthy)
 resourcemanager                resourcemanager         Up 2 hours (healthy)

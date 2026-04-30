@@ -175,13 +175,14 @@ snapshot_conf() {
 
 restore_conf() {
   local clean_conf="$REPO_ROOT/tests/configs/clean"
+  local f base
 
-  # Restore from tests/configs/clean/ first — this is the authoritative
-  # source. Using a startup snapshot was unreliable because a previously
-  # broken conf/ would be captured and then propagated to every restore.
+  # Restore every file from tests/configs/clean/ — this is the sole
+  # authoritative source. The startup snapshot is no longer used for
+  # restore; it was unreliable because a previously-broken conf/ would
+  # be snapshotted and then propagated on every restore.
   for f in "$clean_conf"/*; do
     [ -f "$f" ] || continue
-    local base
     base=$(basename "$f")
     if [ "$base" = "hadoop.env" ]; then
       printf '%s' "$(cat "$f")" > "$REPO_ROOT/hadoop.env"
@@ -192,25 +193,6 @@ restore_conf() {
     fi
   done
 
-  # For any conf/ files not covered by tests/configs/clean/ (e.g.
-  # core-site.xml, mapred-site.xml), fall back to the startup snapshot.
-  if [ -n "$SNAPSHOT_BACKUP" ] && [ -d "$SNAPSHOT_BACKUP" ]; then
-    for f in "$SNAPSHOT_BACKUP/conf"/*; do
-      [ -f "$f" ] || continue
-      local base
-      base=$(basename "$f")
-      [ -f "$clean_conf/$base" ] && continue
-      printf '%s' "$(cat "$f")" > "$CONF_DIR/$base"
-    done
-  fi
-
-  # Force-recreate namenode and datanode so their single-file bind mounts
-  # are re-established. WSL2/Docker Desktop loses the mount after inode
-  # changes even with in-place writes on some kernel versions.
-  docker compose up -d --force-recreate --no-deps namenode datanode \
-    >/dev/null 2>&1 || true
-  docker compose up -d --no-deps spark-client hive-server2 \
-    >/dev/null 2>&1 || true
 }
 
 cleanup_on_exit() {
